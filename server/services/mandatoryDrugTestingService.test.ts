@@ -16,7 +16,7 @@ function entry(overrides: Partial<TestingListEntry> = {}): TestingListEntry {
     prisoner: overrides.prisoner ?? {
       firstName: 'DAN',
       lastName: 'WEHNER',
-      location: 'RECP',
+      cellLocation: 'RECP',
       releaseDate: null,
     },
     promoted: overrides.promoted ?? null,
@@ -125,7 +125,7 @@ describe('MandatoryDrugTestingService', () => {
               id: 'm1',
               testedStatus: true,
               sampleTakenDate: '2026-09-05',
-              prisoner: { firstName: 'A', lastName: 'A', location: 'A-01', releaseDate: '2026-09-30' },
+              prisoner: { firstName: 'A', lastName: 'A', cellLocation: 'A-01', releaseDate: '2026-09-30' },
             }),
             // completed unable-to-test with Friday (not counted)
             entry({
@@ -133,13 +133,13 @@ describe('MandatoryDrugTestingService', () => {
               testedStatus: false,
               reasonNotTested: 'REFUSE',
               sampleTakenDate: '2026-09-04',
-              prisoner: { firstName: 'B', lastName: 'B', location: 'A-02', releaseDate: '2026-09-01' },
+              prisoner: { firstName: 'B', lastName: 'B', cellLocation: 'A-02', releaseDate: '2026-09-01' },
             }),
             // Not started, no weekend
             entry({
               id: 'm3',
               testedStatus: null,
-              prisoner: { firstName: 'C', lastName: 'C', location: 'A-03', releaseDate: '2026-10-01' },
+              prisoner: { firstName: 'C', lastName: 'C', cellLocation: 'A-03', releaseDate: '2026-10-01' },
             }),
           ],
         }),
@@ -153,6 +153,8 @@ describe('MandatoryDrugTestingService', () => {
       expect(view.summary.completed).toBe(2)
       expect(view.summary.releasingThisMonth).toBe(2)
       expect(view.summary.testedOnWeekend).toBe(1)
+      expect(view.summary.mainTotal).toBe(3)
+      expect(view.summary.weekendTarget).toBe(1)
     })
   })
 
@@ -358,7 +360,7 @@ describe('MandatoryDrugTestingService', () => {
           mainList: [
             entry({
               id: 'e',
-              prisoner: { firstName: 'A', lastName: 'A', location: 'A-03-091', releaseDate: null },
+              prisoner: { firstName: 'A', lastName: 'A', cellLocation: 'A-03-091', releaseDate: null },
             }),
           ],
         }),

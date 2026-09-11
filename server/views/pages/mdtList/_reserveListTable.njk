@@ -1,7 +1,7 @@
 {% from "govuk/components/tag/macro.njk" import govukTag %}
 
-<table class="govuk-table" data-testid="mdt-reserve-table">
-  <caption class="govuk-table__caption govuk-visually-hidden">Reserve testing list</caption>
+<table class="govuk-table" data-testid="mdt-reserve-table" aria-describedby="mdt-reserve-summary-caption">
+  <caption id="mdt-reserve-summary-caption" class="govuk-table__caption govuk-visually-hidden">Reserve testing list</caption>
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header">Order</th>
@@ -15,17 +15,17 @@
     {% for row in view.reserveRows %}
       <tr class="govuk-table__row" data-entry-id="{{ row.entryId }}">
         <td class="govuk-table__cell">{{ row.order }}</td>
-        <td class="govuk-table__cell">
+        <th scope="row" class="govuk-table__header govuk-!-font-weight-regular">
           <div>{{ row.prisonerName }}</div>
-          <div class="govuk-hint">{{ row.prisonerNumber }}</div>
-        </td>
+          <div class="govuk-hint"><span class="govuk-visually-hidden">Prisoner number </span>{{ row.prisonerNumber }}</div>
+        </th>
         <td class="govuk-table__cell">{{ row.location }}</td>
         <td class="govuk-table__cell">{{ row.lastSelectedMonth }}</td>
         <td class="govuk-table__cell">
           {% if row.status == "Available as reserve" %}
-            {{ govukTag({ text: row.status, classes: "govuk-tag--blue" }) }}
+            {{ govukTag({ text: row.status, classes: "govuk-tag--blue", attributes: { "aria-label": "Status: " + row.status } }) }}
           {% else %}
-            {{ govukTag({ text: row.status, classes: "govuk-tag--purple" }) }}
+            {{ govukTag({ text: row.status, classes: "govuk-tag--purple", attributes: { "aria-label": "Status: " + row.status } }) }}
           {% endif %}
         </td>
       </tr>

@@ -173,7 +173,14 @@ export default class MandatoryDrugTestingService {
       fallbackNotice: null,
       mainRows: [],
       reserveRows: [],
-      summary: { completed: 0, releasingThisMonth: 0, testedOnWeekend: 0 },
+      summary: {
+        completed: 0,
+        mainTotal: 0,
+        releasingThisMonth: 0,
+        testedOnWeekend: 0,
+        weekendTarget: 0,
+        reserve: { reservesUsed: 0, reserveTotal: 0, releasingThisMonth: 0 },
+      },
       detailsMeta: { rows: [] },
       permissions: {
         canRecordTest: viewerPermission === 'MANAGE',
@@ -221,8 +228,8 @@ export default class MandatoryDrugTestingService {
       prisonerNumber: entry.prisonerNumber,
       prisonerName,
       originalList,
-      location: entry.prisoner.location,
-      locationSortKey: toNaturalKey(entry.prisoner.location),
+      location: entry.prisoner.cellLocation,
+      locationSortKey: toNaturalKey(entry.prisoner.cellLocation),
       releaseDate,
       releaseSortKey,
       lastSelectedMonth,
@@ -240,7 +247,7 @@ export default class MandatoryDrugTestingService {
       order: entry.listSelectionNumber,
       prisonerNumber: entry.prisonerNumber,
       prisonerName: `${entry.prisoner.lastName}, ${entry.prisoner.firstName}`,
-      location: entry.prisoner.location,
+      location: entry.prisoner.cellLocation,
       lastSelectedMonth: formatLastSelectedMonth(entry.lastTestedDate),
       status: entry.promoted === true ? 'Moved to main list' : 'Available as reserve',
     }
@@ -303,7 +310,27 @@ export default class MandatoryDrugTestingService {
         }
       }
     }
-    return { completed, releasingThisMonth: releasing, testedOnWeekend: weekend }
+    let reservesUsed = 0
+    let reserveReleasing = 0
+    for (const r of reserveListEntries) {
+      if (r.promoted === true) reservesUsed += 1
+      if (r.prisoner.releaseDate && isSameYearMonth(r.prisoner.releaseDate, listMonth)) {
+        reserveReleasing += 1
+      }
+    }
+
+    return {
+      completed,
+      mainTotal: mainListEntries.length,
+      releasingThisMonth: releasing,
+      testedOnWeekend: weekend,
+      weekendTarget: Math.ceil(mainListEntries.length * 0.14),
+      reserve: {
+        reservesUsed,
+        reserveTotal: reserveListEntries.length,
+        releasingThisMonth: reserveReleasing,
+      },
+    }
   }
 
   private buildDetailsMeta(): DetailsMeta {

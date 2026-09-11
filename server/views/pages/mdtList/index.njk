@@ -16,8 +16,20 @@
     ]
   }) }}
 
-  <span class="govuk-caption-xl" data-testid="mdt-caption">{{ view.caption }}</span>
-  <h1 class="govuk-heading-xl" data-testid="mdt-heading">{{ view.heading }}</h1>
+  <div class="govuk-grid-row mdt-header-row">
+    <div class="govuk-grid-column-one-half">
+      <span class="govuk-caption-xl" data-testid="mdt-caption">{{ view.caption }}</span>
+      <h1 class="govuk-heading-xl" data-testid="mdt-heading">{{ view.heading }}</h1>
+    </div>
+    {% if not view.emptyState %}
+      <div class="govuk-grid-column-one-half mdt-header-actions">
+        <div class="govuk-button-group" role="group" aria-label="Testing list actions">
+          <a class="govuk-button govuk-button--secondary" href="#" data-testid="mdt-view-previous" role="button">View previous months</a>
+          <a class="govuk-button govuk-button--secondary" href="#" data-testid="mdt-print" role="button">Print testing list</a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
 
   {% if view.fallbackNotice %}
     {{ govukNotificationBanner({
@@ -36,11 +48,6 @@
   {% else %}
     {% include "./_detailsBlock.njk" %}
 
-    <div class="govuk-button-group">
-      <a class="govuk-button govuk-button--secondary" href="#" data-testid="mdt-view-previous">View previous months</a>
-      <a class="govuk-button govuk-button--secondary" href="#" data-testid="mdt-print">Print testing list</a>
-    </div>
-
     {% if view.noReservesRemaining %}
       {{ govukNotificationBanner({
         titleText: "Important",
@@ -57,6 +64,7 @@
 
     {% set reservePanelHtml %}
       <h2 class="govuk-heading-l">Reserve list</h2>
+      {% include "./_reserveSummaryBlocks.njk" %}
       <p class="govuk-body">Reserves are used when a main-list prisoner cannot be tested. They need to be tested in list order if used.</p>
       {% include "./_reserveListTable.njk" %}
     {% endset %}

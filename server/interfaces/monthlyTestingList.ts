@@ -1,7 +1,7 @@
 export interface Prisoner {
   firstName: string
   lastName: string
-  location: string
+  cellLocation: string
   releaseDate: string | null
 }
 

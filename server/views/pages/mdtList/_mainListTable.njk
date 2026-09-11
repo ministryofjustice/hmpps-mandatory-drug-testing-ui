@@ -1,7 +1,7 @@
 {% from "govuk/components/tag/macro.njk" import govukTag %}
 
-<table class="govuk-table" data-module="moj-sortable-table" data-testid="mdt-main-table">
-  <caption class="govuk-table__caption govuk-visually-hidden">Main testing list</caption>
+<table class="govuk-table" data-module="moj-sortable-table" data-testid="mdt-main-table" aria-describedby="mdt-main-summary-caption">
+  <caption id="mdt-main-summary-caption" class="govuk-table__caption govuk-visually-hidden">Main testing list</caption>
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header" aria-sort="none">Prisoner</th>
@@ -16,27 +16,27 @@
   <tbody class="govuk-table__body">
     {% for row in view.mainRows %}
       <tr class="govuk-table__row" data-entry-id="{{ row.entryId }}">
-        <td class="govuk-table__cell">
+        <th scope="row" class="govuk-table__header govuk-!-font-weight-regular">
           <div>{{ row.prisonerName }}</div>
-          <div class="govuk-hint">{{ row.prisonerNumber }}</div>
-        </td>
+          <div class="govuk-hint"><span class="govuk-visually-hidden">Prisoner number </span>{{ row.prisonerNumber }}</div>
+        </th>
         <td class="govuk-table__cell">{{ row.originalList }}</td>
         <td class="govuk-table__cell">{{ row.location }}</td>
         <td class="govuk-table__cell">{{ row.releaseDate }}</td>
         <td class="govuk-table__cell">{{ row.lastSelectedMonth }}</td>
         <td class="govuk-table__cell">
           {% if row.status == "Not started" %}
-            {{ govukTag({ text: row.status, classes: "govuk-tag--grey" }) }}
+            {{ govukTag({ text: row.status, classes: "govuk-tag--grey", attributes: { "aria-label": "Status: " + row.status } }) }}
           {% elif row.status == "Sample taken" %}
-            {{ govukTag({ text: row.status, classes: "govuk-tag--green" }) }}
+            {{ govukTag({ text: row.status, classes: "govuk-tag--green", attributes: { "aria-label": "Status: " + row.status } }) }}
           {% else %}
-            {{ govukTag({ text: row.status, classes: "govuk-tag--red" }) }}
+            {{ govukTag({ text: row.status, classes: "govuk-tag--red", attributes: { "aria-label": "Status: " + row.status } }) }}
           {% endif %}
         </td>
         <td class="govuk-table__cell">
           {% if row.action.kind == "record-test" %}
             {% if view.permissions.level | hasPermission('MANAGE') %}
-              <a href="{{ row.action.href }}" class="govuk-link" data-testid="mdt-action-record-test">Record test</a>
+              <a href="{{ row.action.href }}" class="govuk-link" data-testid="mdt-action-record-test" aria-label="Record test for {{ row.prisonerName }}">Record test</a>
             {% else %}
               <span data-testid="mdt-action-no-action">No action needed</span>
             {% endif %}
@@ -44,7 +44,7 @@
             <span data-testid="mdt-action-no-action">No action needed</span>
           {% elif row.action.kind == "replaced-by-reserve" %}
             {% if row.action.href %}
-              <a href="{{ row.action.href }}" target="_blank" rel="noopener noreferrer" class="govuk-link" data-testid="mdt-action-replaced">{{ row.action.text }}</a>
+              <a href="{{ row.action.href }}" target="_blank" rel="noopener noreferrer" class="govuk-link" data-testid="mdt-action-replaced" aria-label="{{ row.action.text }} for {{ row.prisonerName }} (opens in new tab)">{{ row.action.text }}</a>
             {% else %}
               <span data-testid="mdt-action-replaced">{{ row.action.text }}</span>
             {% endif %}
@@ -58,5 +58,5 @@
 </table>
 
 <nav class="moj-pagination" data-testid="mdt-main-pagination" aria-label="Main list pagination">
-  <p class="govuk-body-s">Showing {{ view.mainRows | length }} row{% if view.mainRows | length != 1 %}s{% endif %}.</p>
+  <p class="govuk-body-s" aria-live="polite">Showing {{ view.mainRows | length }} row{% if view.mainRows | length != 1 %}s{% endif %}.</p>
 </nav>

@@ -1,9 +1,18 @@
 import type { UserPermissionLevel } from '../middleware/permissions/userPermissionLevel'
 
+export interface ReserveSummaryCounts {
+  reservesUsed: number
+  reserveTotal: number
+  releasingThisMonth: number
+}
+
 export interface SummaryCounts {
   completed: number
+  mainTotal: number
   releasingThisMonth: number
   testedOnWeekend: number
+  weekendTarget: number
+  reserve: ReserveSummaryCounts
 }
 
 export type LastSelectedSortKey = { group: 0 | 1 | 2; recencyMs: number }
