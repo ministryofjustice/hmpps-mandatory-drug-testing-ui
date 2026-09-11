@@ -1,0 +1,20 @@
+<div class="mdt-summary-blocks govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
+    <div class="govuk-panel govuk-panel--confirmation" data-testid="mdt-summary-completed">
+      <h3 class="govuk-heading-m">Completed</h3>
+      <p class="govuk-body">{{ view.summary.completed }}</p>
+    </div>
+  </div>
+  <div class="govuk-grid-column-one-third">
+    <div class="govuk-panel govuk-panel--confirmation" data-testid="mdt-summary-releasing">
+      <h3 class="govuk-heading-m">Releasing this month</h3>
+      <p class="govuk-body">{{ view.summary.releasingThisMonth }}</p>
+    </div>
+  </div>
+  <div class="govuk-grid-column-one-third">
+    <div class="govuk-panel govuk-panel--confirmation" data-testid="mdt-summary-weekend">
+      <h3 class="govuk-heading-m">Tested on weekend</h3>
+      <p class="govuk-body">{{ view.summary.testedOnWeekend }}</p>
+    </div>
+  </div>
+</div>
