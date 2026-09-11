@@ -72,15 +72,36 @@ export default {
       agent: new AgentConfig(Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000))),
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
-    exampleApi: {
-      url: get('EXAMPLE_API_URL', 'http://localhost:8080', requiredInProduction),
+    prisonApi: {
+      url: get('PRISON_API_URL', 'http://127.0.0.1:8080', requiredInProduction),
       healthPath: '/health/ping',
       timeout: {
-        response: Number(get('EXAMPLE_API_TIMEOUT_RESPONSE', 5000)),
-        deadline: Number(get('EXAMPLE_API_TIMEOUT_DEADLINE', 5000)),
+        response: Number(get('PRISON_API_TIMEOUT_RESPONSE', 10000)),
+        deadline: Number(get('PRISON_API_TIMEOUT_DEADLINE', 10000)),
       },
-      agent: new AgentConfig(Number(get('EXAMPLE_API_TIMEOUT_RESPONSE', 5000))),
+      agent: new AgentConfig(Number(get('PRISON_API_TIMEOUT_RESPONSE', 10000))),
     },
+    mandatoryDrugTestingApi: {
+      url: get('MANDATORY_DRUG_TESTING_API_URL', 'http://127.0.0.1:8080', requiredInProduction),
+      healthPath: '/health/ping',
+      timeout: {
+        response: Number(get('MANDATORY_DRUG_TESTING_API_TIMEOUT_RESPONSE', 10000)),
+        deadline: Number(get('MANDATORY_DRUG_TESTING_API_TIMEOUT_DEADLINE', 10000)),
+      },
+      agent: new AgentConfig(Number(get('MANDATORY_DRUG_TESTING_API_TIMEOUT_RESPONSE', 10000))),
+    },
+  },
+  manageAdjudications: {
+    urlTemplate: (() => {
+      const template = get(
+        'MANAGE_ADJUDICATIONS_URL',
+        'https://manage-adjudications-dev.hmpps.service.justice.gov.uk/incident-details/{prisonerNumber}',
+      ) as string
+      if (!template.includes('{prisonerNumber}')) {
+        throw new Error('MANAGE_ADJUDICATIONS_URL must contain the {prisonerNumber} placeholder')
+      }
+      return template
+    })(),
   },
   sqs: {
     audit: auditConfig(),

@@ -32,18 +32,18 @@ Single-project Express + Nunjucks SSR:
 
 **Purpose**: Configure the environment, wire APIs into config, remove the ExampleApi scaffold. No behavioural change until Phase 3+ but everything downstream depends on these landing first.
 
-- [ ] T001 Add `apis.prisonApi` config block in `server/config.ts` per `research/technical-brief.md` §3: env vars `PRISON_API_URL` (localhost default `http://127.0.0.1:8080`), `PRISON_API_TIMEOUT_RESPONSE`/`PRISON_API_TIMEOUT_DEADLINE`, `AgentConfig`, `healthPath: '/health/ping'`.
-- [ ] T002 Add `apis.mandatoryDrugTestingApi` config block in `server/config.ts` per `research/technical-brief.md` §3: env vars `MANDATORY_DRUG_TESTING_API_URL` (localhost default `http://127.0.0.1:8080`), `MANDATORY_DRUG_TESTING_API_TIMEOUT_RESPONSE`/`DEADLINE`, `AgentConfig`, `healthPath: '/health/ping'`.
-- [ ] T003 Add `manageAdjudications.urlTemplate` config block in `server/config.ts`: env var `MANAGE_ADJUDICATIONS_URL` with dev default `https://manage-adjudications-dev.hmpps.service.justice.gov.uk/incident-details/{prisonerNumber}`. Validate that the value contains the `{prisonerNumber}` placeholder at boot.
-- [ ] T004 Remove `apis.exampleApi` block and all associated env vars from `server/config.ts` and `feature.env`/env templates per `research/technical-brief.md` §9.
-- [ ] T005 [P] Delete `server/data/exampleApiClient.ts` and `server/data/exampleApiClient.test.ts`.
-- [ ] T006 [P] Delete `server/services/exampleService.ts` and `server/services/exampleService.test.ts`.
-- [ ] T007 Remove `ExampleApiClient` from `server/data/index.ts` and `ExampleService` from `server/services/index.ts` (edit the barrel/factory exports and any dependency-injection wiring).
-- [ ] T008 Remove any `Page.EXAMPLE_PAGE` (or equivalent) enum member and its route registration in `server/routes/index.ts`; delete/replace the example view under `server/views/pages/`.
-- [ ] T009 Wire `retrieveCaseLoadData({ logger, prisonApiConfig: config.apis.prisonApi })` from `@ministryofjustice/hmpps-connect-dps-components` into `server/app.ts` per `research/technical-brief.md` §3, mounted after session/auth but before route mounting.
-- [ ] T010 Add `MANDATORY_DRUG_TESTING_API_URL`, `MANDATORY_DRUG_TESTING_API_TIMEOUT_RESPONSE`, `MANDATORY_DRUG_TESTING_API_TIMEOUT_DEADLINE`, `PRISON_API_URL`, `PRISON_API_TIMEOUT_RESPONSE`, `PRISON_API_TIMEOUT_DEADLINE`, `MANAGE_ADJUDICATIONS_URL` to the repo's env-var manifests (`feature.env.example`, `helm_deploy/values*.yaml`, Kubernetes secret templates, README env-vars table).
-- [ ] T011 [P] Confirm `@ministryofjustice/hmpps-auth-clients` (already used by `asSystem()`) is present in `package.json` at the version documented in `research/technical-brief.md` §3; add/update if missing.
-- [ ] T012 [P] Add / confirm `SYSTEM_CLIENT_ID` and `SYSTEM_CLIENT_SECRET` are read by the existing auth-clients wiring (no code change expected — verify by tracing `asSystem()` back to config).
+- [X] T001 Add `apis.prisonApi` config block in `server/config.ts` per `research/technical-brief.md` §3: env vars `PRISON_API_URL` (localhost default `http://127.0.0.1:8080`), `PRISON_API_TIMEOUT_RESPONSE`/`PRISON_API_TIMEOUT_DEADLINE`, `AgentConfig`, `healthPath: '/health/ping'`.
+- [X] T002 Add `apis.mandatoryDrugTestingApi` config block in `server/config.ts` per `research/technical-brief.md` §3: env vars `MANDATORY_DRUG_TESTING_API_URL` (localhost default `http://127.0.0.1:8080`), `MANDATORY_DRUG_TESTING_API_TIMEOUT_RESPONSE`/`DEADLINE`, `AgentConfig`, `healthPath: '/health/ping'`.
+- [X] T003 Add `manageAdjudications.urlTemplate` config block in `server/config.ts`: env var `MANAGE_ADJUDICATIONS_URL` with dev default `https://manage-adjudications-dev.hmpps.service.justice.gov.uk/incident-details/{prisonerNumber}`. Validate that the value contains the `{prisonerNumber}` placeholder at boot.
+- [X] T004 Remove `apis.exampleApi` block and all associated env vars from `server/config.ts` and `feature.env`/env templates per `research/technical-brief.md` §9.
+- [X] T005 [P] Delete `server/data/exampleApiClient.ts` and `server/data/exampleApiClient.test.ts`.
+- [X] T006 [P] Delete `server/services/exampleService.ts` and `server/services/exampleService.test.ts`.
+- [X] T007 Remove `ExampleApiClient` from `server/data/index.ts` and `ExampleService` from `server/services/index.ts` (edit the barrel/factory exports and any dependency-injection wiring).
+- [X] T008 Remove any `Page.EXAMPLE_PAGE` (or equivalent) enum member and its route registration in `server/routes/index.ts`; delete/replace the example view under `server/views/pages/`.
+- [X] T009 Wire `retrieveCaseLoadData({ logger, prisonApiConfig: config.apis.prisonApi })` from `@ministryofjustice/hmpps-connect-dps-components` into `server/app.ts` per `research/technical-brief.md` §3, mounted after session/auth but before route mounting.
+- [X] T010 Add `MANDATORY_DRUG_TESTING_API_URL`, `MANDATORY_DRUG_TESTING_API_TIMEOUT_RESPONSE`, `MANDATORY_DRUG_TESTING_API_TIMEOUT_DEADLINE`, `PRISON_API_URL`, `PRISON_API_TIMEOUT_RESPONSE`, `PRISON_API_TIMEOUT_DEADLINE`, `MANAGE_ADJUDICATIONS_URL` to the repo's env-var manifests (`feature.env.example`, `helm_deploy/values*.yaml`, Kubernetes secret templates, README env-vars table).
+- [X] T011 [P] Confirm `@ministryofjustice/hmpps-auth-clients` (already used by `asSystem()`) is present in `package.json` at the version documented in `research/technical-brief.md` §3; add/update if missing.
+- [X] T012 [P] Add / confirm `SYSTEM_CLIENT_ID` and `SYSTEM_CLIENT_SECRET` are read by the existing auth-clients wiring (no code change expected — verify by tracing `asSystem()` back to config).
 
 **Checkpoint**: `npm run typecheck`, `npm run lint`, and `npm test` all pass (the ExampleApi test suites are gone, no orphan references remain).
 
@@ -57,40 +57,40 @@ Single-project Express + Nunjucks SSR:
 
 ### Domain interfaces
 
-- [ ] T013 [P] Create `server/interfaces/monthlyTestingList.ts` with `MonthlyTestingList`, `TestingListEntry`, `Prisoner` types matching `data-model.md` §1 exactly (nullable-boolean `testedStatus`; `listType: "M" | "R"`; `promoted: boolean | null`; `sampleTakenDate`/`lastTestedDate` as `string | null`; `Prisoner.location` string).
-- [ ] T014 [P] Create `server/interfaces/testedReason.ts` with `TestedReason = { code: string; description: string }` per `data-model.md` §2 (no `url` field).
+- [X] T013 [P] Create `server/interfaces/monthlyTestingList.ts` with `MonthlyTestingList`, `TestingListEntry`, `Prisoner` types matching `data-model.md` §1 exactly (nullable-boolean `testedStatus`; `listType: "M" | "R"`; `promoted: boolean | null`; `sampleTakenDate`/`lastTestedDate` as `string | null`; `Prisoner.location` string).
+- [X] T014 [P] Create `server/interfaces/testedReason.ts` with `TestedReason = { code: string; description: string }` per `data-model.md` §2 (no `url` field).
 
 ### API client + tests
 
-- [ ] T015 Create failing test file `server/data/mandatoryDrugTestingApiClient.test.ts` covering (per `contracts/mdt-list-endpoint.md` verification list): 200 happy path, 404 → `null`, 500 → reject, timeout → reject, `Authorization: Bearer` header present, URL-encoding of path params. Include tests for `getTestedReasons()`: 200 happy path returns `TestedReason[]`, 404 → empty array, 5xx → reject.
-- [ ] T016 Create `server/data/mandatoryDrugTestingApiClient.ts` extending `RestClient`, calling `asSystem()` for the token, with methods:
+- [X] T015 Create failing test file `server/data/mandatoryDrugTestingApiClient.test.ts` covering (per `contracts/mdt-list-endpoint.md` verification list): 200 happy path, 404 → `null`, 500 → reject, timeout → reject, `Authorization: Bearer` header present, URL-encoding of path params. Include tests for `getTestedReasons()`: 200 happy path returns `TestedReason[]`, 404 → empty array, 5xx → reject.
+- [X] T016 Create `server/data/mandatoryDrugTestingApiClient.ts` extending `RestClient`, calling `asSystem()` for the token, with methods:
   - `getMonthlyList(prisonCode: string, listDate: string): Promise<MonthlyTestingList | null>` — path `/prisons/{prisonCode}/mandatory-drug-testing-lists/{listDate}`, URL-encoding both params, resolving `null` on 404.
   - `getTestedReasons(): Promise<TestedReason[]>` — path `/reference-data/tested-reasons`, resolving `[]` on 404.
   Register the client in `server/data/index.ts`. All tests from T015 MUST pass.
 
 ### Roles middleware + permission enum + tests
 
-- [ ] T017 [P] Create `server/middleware/permissions/userPermissionLevel.ts` exporting the enum `UserPermissionLevel = 'VIEW_ONLY' | 'MANAGE' | 'FORBIDDEN'` per `contracts/ui-contract.md` § Access control.
-- [ ] T018 Create failing test file `server/middleware/permissions/populateUserPermissions.test.ts`: given a user with `MANDATORY_DRUG_TESTING_RO` → `res.locals.permissions === 'VIEW_ONLY'`; with `MANDATORY_DRUG_TESTING_RW` or `MANDATORY_DRUG_TESTING_RWU` → `'MANAGE'`; with none of these → `'FORBIDDEN'`; no user → `'FORBIDDEN'`.
-- [ ] T019 Create `server/middleware/permissions/populateUserPermissions.ts` that inspects `res.locals.user.userRoles` (or the repo's existing convention) and sets `res.locals.permissions`. All tests from T018 MUST pass.
-- [ ] T020 Create failing test file `server/middleware/permissions/requirePermissions.test.ts`: with `permissions === 'VIEW_ONLY'` or `'MANAGE'` and the required level in `['VIEW_ONLY', 'MANAGE']` → calls `next()`; with `'FORBIDDEN'` → renders 403 DPS "not authorised" page; missing `res.locals.permissions` → renders 500 (config bug).
-- [ ] T021 Create `server/middleware/permissions/requirePermissions.ts` as a factory `requirePermissions(...allowed: UserPermissionLevel[])`. All tests from T020 MUST pass.
-- [ ] T022 Mount `populateUserPermissions` in `server/app.ts` after `setUpCurrentUser` and before route mounting.
+- [X] T017 [P] Create `server/middleware/permissions/userPermissionLevel.ts` exporting the enum `UserPermissionLevel = 'VIEW_ONLY' | 'MANAGE' | 'FORBIDDEN'` per `contracts/ui-contract.md` § Access control.
+- [X] T018 Create failing test file `server/middleware/permissions/populateUserPermissions.test.ts`: given a user with `MANDATORY_DRUG_TESTING_RO` → `res.locals.permissions === 'VIEW_ONLY'`; with `MANDATORY_DRUG_TESTING_RW` or `MANDATORY_DRUG_TESTING_RWU` → `'MANAGE'`; with none of these → `'FORBIDDEN'`; no user → `'FORBIDDEN'`.
+- [X] T019 Create `server/middleware/permissions/populateUserPermissions.ts` that inspects `res.locals.user.userRoles` (or the repo's existing convention) and sets `res.locals.permissions`. All tests from T018 MUST pass.
+- [X] T020 Create failing test file `server/middleware/permissions/requirePermissions.test.ts`: with `permissions === 'VIEW_ONLY'` or `'MANAGE'` and the required level in `['VIEW_ONLY', 'MANAGE']` → calls `next()`; with `'FORBIDDEN'` → renders 403 DPS "not authorised" page; missing `res.locals.permissions` → renders 500 (config bug).
+- [X] T021 Create `server/middleware/permissions/requirePermissions.ts` as a factory `requirePermissions(...allowed: UserPermissionLevel[])`. All tests from T020 MUST pass.
+- [X] T022 Mount `populateUserPermissions` in `server/app.ts` after `setUpCurrentUser` and before route mounting.
 
 ### Nunjucks role-filter + tests
 
-- [ ] T023 Create failing test file `server/utils/hasPermissionFilter.test.ts`: filter returns `true`/`false` for each `UserPermissionLevel` against each required level (as per `data-model.md` §4 role gating rule).
-- [ ] T024 Create `server/utils/hasPermissionFilter.ts` and register it as a Nunjucks filter alongside the repo's other filter registrations. All tests from T023 MUST pass.
+- [X] T023 Create failing test file `server/utils/hasPermissionFilter.test.ts`: filter returns `true`/`false` for each `UserPermissionLevel` against each required level (as per `data-model.md` §4 role gating rule).
+- [X] T024 Create `server/utils/hasPermissionFilter.ts` and register it as a Nunjucks filter alongside the repo's other filter registrations. All tests from T023 MUST pass.
 
 ### Natural-alphanumeric compare util + tests
 
-- [ ] T025 [P] Create failing test file `server/services/utils/naturalAlphanumericCompare.test.ts` covering the cases enumerated in `data-model.md` §4 and §5: `"A-03-091"` vs `"A-03-9"`, `"RECP"` vs `"A-01-001"`, empty string, single token, mixed case, equal-shape ties.
-- [ ] T026 [P] Create `server/services/utils/naturalAlphanumericCompare.ts` implementing the tokeniser + comparator per `data-model.md` §4. All tests from T025 MUST pass.
+- [X] T025 [P] Create failing test file `server/services/utils/naturalAlphanumericCompare.test.ts` covering the cases enumerated in `data-model.md` §4 and §5: `"A-03-091"` vs `"A-03-9"`, `"RECP"` vs `"A-01-001"`, empty string, single token, mixed case, equal-shape ties.
+- [X] T026 [P] Create `server/services/utils/naturalAlphanumericCompare.ts` implementing the tokeniser + comparator per `data-model.md` §4. All tests from T025 MUST pass.
 
 ### Route scaffold (empty controller)
 
-- [ ] T027 Create `server/routes/mdtList/mdtListRouter.ts` mounting a single `GET /` handler protected by `requirePermissions('VIEW_ONLY', 'MANAGE')`; register the router at path `/mdt-list` in `server/routes/index.ts`.
-- [ ] T028 Add a `/` → `/mdt-list` 302 redirect route and delete the placeholder content of `server/views/pages/index.njk` per `research.md` R-2.
+- [X] T027 Create `server/routes/mdtList/mdtListRouter.ts` mounting a single `GET /` handler protected by `requirePermissions('VIEW_ONLY', 'MANAGE')`; register the router at path `/mdt-list` in `server/routes/index.ts`.
+- [X] T028 Add a `/` → `/mdt-list` 302 redirect route and delete the placeholder content of `server/views/pages/index.njk` per `research.md` R-2.
 
 **Checkpoint**: `GET /mdt-list` returns 200 with a minimal shell (or the empty state), 403 for users without a permitted role, and unit tests for T013–T028 all green. `GET /` redirects to `/mdt-list`.
 
@@ -106,19 +106,19 @@ Single-project Express + Nunjucks SSR:
 
 Write these first — they MUST fail before implementation.
 
-- [ ] T029 [P] [US1] Failing unit test: `server/services/mandatoryDrugTestingService.test.ts` (initial suite) — `getMonthlyView(prisonCode, listDate, viewerPermission)` returns a `MdtListView` whose `caption`, `heading`, `mainRows`, `reserveRows`, `summary`, `detailsMeta`, and `permissions` are populated correctly given a canonical API response. Includes: main-list rows have `originalList === "Main"` sourced from `mainList[]`; view is built by concatenating `mainList[]` with `reserveList.filter(r => r.promoted === true)` (with `originalList === "Reserve"` on the latter).
-- [ ] T030 [P] [US1] Failing unit test extending `mandatoryDrugTestingService.test.ts`: summary counts — `Completed` (any `mainRows` entry with `testedStatus !== null`), `Releasing this month` (`releaseDate` in same `YYYY-MM` as list month, edge cases 1st/last day), `Tested on weekend` (`sampleTakenDate` on Sat/Sun; Friday excluded; null excluded).
-- [ ] T031 [P] [US1] Failing unit test: `server/routes/mdtList/mdtListController.test.ts` — controller populates locals from `res.locals.user`, `res.locals.permissions`, and the service view model, then renders `pages/mdtList/index.njk`.
-- [ ] T032 [P] [US1] Failing Playwright test in `integration_tests/mdt-list.spec.ts`, scenario "US1 — main list renders correctly": mock the API to return a canonical list, sign in as RO, assert caption `HMP {name}`, `<h1>` = `{Month YYYY}`, Main tab active, `data-testid="mdt-main-table"` shows the expected number of rows with the seven columns per FR-003.
+- [X] T029 [P] [US1] Failing unit test: `server/services/mandatoryDrugTestingService.test.ts` (initial suite) — `getMonthlyView(prisonCode, listDate, viewerPermission)` returns a `MdtListView` whose `caption`, `heading`, `mainRows`, `reserveRows`, `summary`, `detailsMeta`, and `permissions` are populated correctly given a canonical API response. Includes: main-list rows have `originalList === "Main"` sourced from `mainList[]`; view is built by concatenating `mainList[]` with `reserveList.filter(r => r.promoted === true)` (with `originalList === "Reserve"` on the latter).
+- [X] T030 [P] [US1] Failing unit test extending `mandatoryDrugTestingService.test.ts`: summary counts — `Completed` (any `mainRows` entry with `testedStatus !== null`), `Releasing this month` (`releaseDate` in same `YYYY-MM` as list month, edge cases 1st/last day), `Tested on weekend` (`sampleTakenDate` on Sat/Sun; Friday excluded; null excluded).
+- [X] T031 [P] [US1] Failing unit test: `server/routes/mdtList/mdtListController.test.ts` — controller populates locals from `res.locals.user`, `res.locals.permissions`, and the service view model, then renders `pages/mdtList/index.njk`.
+- [X] T032 [P] [US1] Failing Playwright test in `integration_tests/mdt-list.spec.ts`, scenario "US1 — main list renders correctly": mock the API to return a canonical list, sign in as RO, assert caption `HMP {name}`, `<h1>` = `{Month YYYY}`, Main tab active, `data-testid="mdt-main-table"` shows the expected number of rows with the seven columns per FR-003.
 
 ### Implementation for User Story 1
 
-- [ ] T033 [US1] Implement `MandatoryDrugTestingService.getMonthlyView(prisonCode, listDate, viewerPermission)` in `server/services/mandatoryDrugTestingService.ts` — call `apiClient.getMonthlyList()`; on non-null result, build `MdtListView` per `data-model.md` §3 (including the `mainList + promoted reserves` concat, `originalList` derivation, default sort ordering, summary counts). Register the service in `server/services/index.ts`.
-- [ ] T034 [US1] Implement `server/routes/mdtList/mdtListController.ts` — read `activeCaseLoadId` and current month (`YYYY-MM`) from `res.locals`/date, call the service, render `pages/mdtList/index.njk`. Return 500 with ERROR log if `activeCaseLoadId` is missing (per `contracts/ui-contract.md`).
-- [ ] T035 [US1] Create `server/views/pages/mdtList/index.njk` — DPS Header/Footer via `hmpps-connect-dps-components`, breadcrumbs, caption (`FR-023`), `<h1>` bound to `heading`, GOV.UK Tabs skeleton with two panels `#main-list` and `#reserve-list`, `<title>MDT list - Mandatory drug testing - DPS</title>` per FR-022.
-- [ ] T036 [US1] Create `server/views/pages/mdtList/_mainListTable.njk` — MOJ Sortable Table (`data-module="moj-sortable-table"`, `data-testid="mdt-main-table"`) with the seven columns of FR-003; render `prisonerName` and `prisonerNumber` stacked; format `releaseDate` as `DD Mon YYYY` or `No data available`; format `lastSelectedMonth`; render Status as a Tag; render Action per the model shape (kind + text + optional href — full role-gate handling arrives in T041). Include `data-testid`s from `contracts/ui-contract.md`.
-- [ ] T037 [US1] Create `server/views/pages/mdtList/_summaryBlocks.njk` — three blocks per FR-024 with `data-testid`s `mdt-summary-completed`, `mdt-summary-releasing`, `mdt-summary-weekend`.
-- [ ] T038 [US1] Embed the row dataset as `<script type="application/json" id="mdt-list-data">…</script>` in the Main panel (per `contracts/ui-contract.md` § Client-side JS data) so subsequent stories (US2 sort/pagination) can consume without re-serialising.
+- [X] T033 [US1] Implement `MandatoryDrugTestingService.getMonthlyView(prisonCode, listDate, viewerPermission)` in `server/services/mandatoryDrugTestingService.ts` — call `apiClient.getMonthlyList()`; on non-null result, build `MdtListView` per `data-model.md` §3 (including the `mainList + promoted reserves` concat, `originalList` derivation, default sort ordering, summary counts). Register the service in `server/services/index.ts`.
+- [X] T034 [US1] Implement `server/routes/mdtList/mdtListController.ts` — read `activeCaseLoadId` and current month (`YYYY-MM`) from `res.locals`/date, call the service, render `pages/mdtList/index.njk`. Return 500 with ERROR log if `activeCaseLoadId` is missing (per `contracts/ui-contract.md`).
+- [X] T035 [US1] Create `server/views/pages/mdtList/index.njk` — DPS Header/Footer via `hmpps-connect-dps-components`, breadcrumbs, caption (`FR-023`), `<h1>` bound to `heading`, GOV.UK Tabs skeleton with two panels `#main-list` and `#reserve-list`, `<title>MDT list - Mandatory drug testing - DPS</title>` per FR-022.
+- [X] T036 [US1] Create `server/views/pages/mdtList/_mainListTable.njk` — MOJ Sortable Table (`data-module="moj-sortable-table"`, `data-testid="mdt-main-table"`) with the seven columns of FR-003; render `prisonerName` and `prisonerNumber` stacked; format `releaseDate` as `DD Mon YYYY` or `No data available`; format `lastSelectedMonth`; render Status as a Tag; render Action per the model shape (kind + text + optional href — full role-gate handling arrives in T041). Include `data-testid`s from `contracts/ui-contract.md`.
+- [X] T037 [US1] Create `server/views/pages/mdtList/_summaryBlocks.njk` — three blocks per FR-024 with `data-testid`s `mdt-summary-completed`, `mdt-summary-releasing`, `mdt-summary-weekend`.
+- [X] T038 [US1] Embed the row dataset as `<script type="application/json" id="mdt-list-data">…</script>` in the Main panel (per `contracts/ui-contract.md` § Client-side JS data) so subsequent stories (US2 sort/pagination) can consume without re-serialising.
 
 **Checkpoint**: `/mdt-list` renders a populated Main tab for RO/RW/RWU users; all US1 tests pass; summary blocks correct; page passes `axe-core` at zero critical/serious violations for the populated Main tab.
 
@@ -132,14 +132,14 @@ Write these first — they MUST fail before implementation.
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T039 [P] [US2] Failing unit tests in `mandatoryDrugTestingService.test.ts` (extension): default-sort ordering — original Main entries first (API order), then promoted reserves by `listSelectionNumber` asc. Precomputed sort keys populated on each `MainListViewRow`: `locationSortKey`, `releaseSortKey`, `lastSelectedSortKey.group`+`.recencyMs`, `statusSortKey`. Covers compound Last-selected sort across all three groups.
-- [ ] T040 [P] [US2] Failing Playwright test in `integration_tests/mdt-list.spec.ts`, scenario "US2 — sort semantics": activate each sortable header in turn, assert row order per US2 ACs #3–8; assert Action column has no sort control; assert sort survives tab switch; assert reload resets to default; assert promoted reserves participate in sort.
+- [X] T039 [P] [US2] Failing unit tests in `mandatoryDrugTestingService.test.ts` (extension): default-sort ordering — original Main entries first (API order), then promoted reserves by `listSelectionNumber` asc. Precomputed sort keys populated on each `MainListViewRow`: `locationSortKey`, `releaseSortKey`, `lastSelectedSortKey.group`+`.recencyMs`, `statusSortKey`. Covers compound Last-selected sort across all three groups.
+- [X] T040 [P] [US2] Failing Playwright test in `integration_tests/mdt-list.spec.ts`, scenario "US2 — sort semantics": activate each sortable header in turn, assert row order per US2 ACs #3–8; assert Action column has no sort control; assert sort survives tab switch; assert reload resets to default; assert promoted reserves participate in sort.
 
 ### Implementation for User Story 2
 
-- [ ] T041 [US2] Extend `MandatoryDrugTestingService` (still `mandatoryDrugTestingService.ts`) to populate all sort keys on every `MainListViewRow`. Uses `naturalAlphanumericCompare` (from T026) for the Location key.
-- [ ] T042 [US2] Create `assets/js/mdt-list-sort.ts` (or the repo's existing FE-assets location) — a small client-side module that reads `#mdt-list-data`, applies the current sort to the live DOM (or re-renders the tbody), updates `aria-sort` on the active header, and preserves the sort across in-page tab switches (module scope). Wire it into `webpack`/`esbuild` bundle entry per repo convention. No sort persistence across reloads.
-- [ ] T043 [US2] Update `_mainListTable.njk` to render each `<th>` with `aria-sort="none"` and the MOJ Sortable-Table button markup so both keyboard and mouse activation are supported.
+- [X] T041 [US2] Extend `MandatoryDrugTestingService` (still `mandatoryDrugTestingService.ts`) to populate all sort keys on every `MainListViewRow`. Uses `naturalAlphanumericCompare` (from T026) for the Location key.
+- [X] T042 [US2] Create `assets/js/mdt-list-sort.ts` (or the repo's existing FE-assets location) — a small client-side module that reads `#mdt-list-data`, applies the current sort to the live DOM (or re-renders the tbody), updates `aria-sort` on the active header, and preserves the sort across in-page tab switches (module scope). Wire it into `webpack`/`esbuild` bundle entry per repo convention. No sort persistence across reloads.
+- [X] T043 [US2] Update `_mainListTable.njk` to render each `<th>` with `aria-sort="none"` and the MOJ Sortable-Table button markup so both keyboard and mouse activation are supported.
 
 **Checkpoint**: All US2 tests pass; sort works with keyboard only; `aria-sort` updates correctly; sort resets on reload.
 
@@ -153,13 +153,13 @@ Write these first — they MUST fail before implementation.
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T044 [P] [US3] Failing unit tests in `mandatoryDrugTestingService.test.ts`: `reserveRows` contains every entry from `reserveList[]`, ordered by `listSelectionNumber` asc; each row's `statusTag` maps `promoted === true → "Moved to main list"`, `promoted === false → "Available as reserve"`.
-- [ ] T045 [P] [US3] Failing Playwright test in `integration_tests/mdt-list.spec.ts`, scenario "US3 — reserve tab renders correctly": switch to Reserve tab, assert H2 "Reserve list", intro paragraph text (verbatim from FR-004 / US3 AC #1), five columns in order, no sort controls on any header, row count = `reserveList.length`, promoted reserves still present with the "Moved to main list" Tag.
+- [X] T044 [P] [US3] Failing unit tests in `mandatoryDrugTestingService.test.ts`: `reserveRows` contains every entry from `reserveList[]`, ordered by `listSelectionNumber` asc; each row's `statusTag` maps `promoted === true → "Moved to main list"`, `promoted === false → "Available as reserve"`.
+- [X] T045 [P] [US3] Failing Playwright test in `integration_tests/mdt-list.spec.ts`, scenario "US3 — reserve tab renders correctly": switch to Reserve tab, assert H2 "Reserve list", intro paragraph text (verbatim from FR-004 / US3 AC #1), five columns in order, no sort controls on any header, row count = `reserveList.length`, promoted reserves still present with the "Moved to main list" Tag.
 
 ### Implementation for User Story 3
 
-- [ ] T046 [US3] Create `server/views/pages/mdtList/_reserveListTable.njk` — plain GOV.UK Table (`data-testid="mdt-reserve-table"`) with the five columns of FR-004, no `data-module="moj-sortable-table"` attribute (so the JS never picks it up). Include the H2 "Reserve list" and the intro paragraph.
-- [ ] T047 [US3] Wire `_reserveListTable.njk` into `index.njk`'s Reserve panel (`#reserve-list`).
+- [X] T046 [US3] Create `server/views/pages/mdtList/_reserveListTable.njk` — plain GOV.UK Table (`data-testid="mdt-reserve-table"`) with the five columns of FR-004, no `data-module="moj-sortable-table"` attribute (so the JS never picks it up). Include the H2 "Reserve list" and the intro paragraph.
+- [X] T047 [US3] Wire `_reserveListTable.njk` into `index.njk`'s Reserve panel (`#reserve-list`).
 
 **Checkpoint**: Reserve tab passes all US3 tests including axe-core.
 
@@ -173,21 +173,21 @@ Write these first — they MUST fail before implementation.
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T048 [P] [US4] Failing unit tests in `mandatoryDrugTestingService.test.ts`: action-rule cases per `data-model.md` §5 test list — originally-selected Main "Not started" → `record-test`; promoted Reserve earliest-untested → `record-test`; promoted Reserve NOT earliest → `wait-for-previous-reserve` (regardless of role); `testedStatus = true` → `no-action`; `testedStatus = false` with `REFUSE` → `replaced-by-reserve` with `href` = `config.manageAdjudications.urlTemplate` substituted with the row's `prisonerNumber`; `testedStatus = false` with `DISCH` → `replaced-by-reserve` with no `href`; unknown reason code → raw code used as `description`.
-- [ ] T049 [P] [US4] Failing unit tests: reason-lookup cache — first call fetches, second call within TTL served from cache, TTL expiry refetches, 404/5xx caches an "unavailable" marker for TTL and falls through to raw-code rendering; adjudication URL for `REFUSE` still applied when reference data is unavailable.
-- [ ] T050 [P] [US4] Failing Playwright test in `integration_tests/mdt-list.spec.ts`, scenario "US4 — reserve promotion, action rendering, cross-tab": seed one `REFUSE` unable-to-test + one promoted reserve; assert original row action = `Replaced by reserve due to Refused a test` as a link with `href` matching the adjudication template substituted with the row's `prisonerNumber`, `target="_blank" rel="noopener noreferrer"`; assert promoted reserve appears on Main with `Original list = Reserve` and action `Record test`; switch to Reserve tab and assert the same prisoner shows Tag `Moved to main list`, order preserved. Then seed a second `DISCH` unable-to-test + a second promoted reserve; assert earliest-promoted still shows `Record test`, later-promoted shows `Test previous reserve first` (regardless of role), and the `DISCH` original row action is plain text (no link).
-- [ ] T051 [P] [US4] Failing Playwright test, scenario "US4 — no more reserves": every reserve has `promoted === true`; assert the "no reserves remain" notification appears per FR-012.
+- [X] T048 [P] [US4] Failing unit tests in `mandatoryDrugTestingService.test.ts`: action-rule cases per `data-model.md` §5 test list — originally-selected Main "Not started" → `record-test`; promoted Reserve earliest-untested → `record-test`; promoted Reserve NOT earliest → `wait-for-previous-reserve` (regardless of role); `testedStatus = true` → `no-action`; `testedStatus = false` with `REFUSE` → `replaced-by-reserve` with `href` = `config.manageAdjudications.urlTemplate` substituted with the row's `prisonerNumber`; `testedStatus = false` with `DISCH` → `replaced-by-reserve` with no `href`; unknown reason code → raw code used as `description`.
+- [X] T049 [P] [US4] Failing unit tests: reason-lookup cache — first call fetches, second call within TTL served from cache, TTL expiry refetches, 404/5xx caches an "unavailable" marker for TTL and falls through to raw-code rendering; adjudication URL for `REFUSE` still applied when reference data is unavailable.
+- [X] T050 [P] [US4] Failing Playwright test in `integration_tests/mdt-list.spec.ts`, scenario "US4 — reserve promotion, action rendering, cross-tab": seed one `REFUSE` unable-to-test + one promoted reserve; assert original row action = `Replaced by reserve due to Refused a test` as a link with `href` matching the adjudication template substituted with the row's `prisonerNumber`, `target="_blank" rel="noopener noreferrer"`; assert promoted reserve appears on Main with `Original list = Reserve` and action `Record test`; switch to Reserve tab and assert the same prisoner shows Tag `Moved to main list`, order preserved. Then seed a second `DISCH` unable-to-test + a second promoted reserve; assert earliest-promoted still shows `Record test`, later-promoted shows `Test previous reserve first` (regardless of role), and the `DISCH` original row action is plain text (no link).
+- [X] T051 [P] [US4] Failing Playwright test, scenario "US4 — no more reserves": every reserve has `promoted === true`; assert the "no reserves remain" notification appears per FR-012.
 
 ### Implementation for User Story 4
 
-- [ ] T052 [US4] Extend `MandatoryDrugTestingService` with `lookupReason(code)` (per-process `Map` + 5-min TTL) and a `getTestedReasonsCached()` fetch wrapper. Uses `apiClient.getTestedReasons()` from T016.
-- [ ] T053 [US4] Extend row shaping in `getMonthlyView()` to compute each row's `action` (per `data-model.md` §4 pseudocode) using: reason lookup, `config.manageAdjudications.urlTemplate` substitution for `REFUSE`, and the earliest-promoted-untested comparison across the built `mainRows` array. Applies to both originally-selected Main entries and promoted reserves.
-- [ ] T054 [US4] Update `_mainListTable.njk` to render each action variant per the model's `kind`:
+- [X] T052 [US4] Extend `MandatoryDrugTestingService` with `lookupReason(code)` (per-process `Map` + 5-min TTL) and a `getTestedReasonsCached()` fetch wrapper. Uses `apiClient.getTestedReasons()` from T016.
+- [X] T053 [US4] Extend row shaping in `getMonthlyView()` to compute each row's `action` (per `data-model.md` §4 pseudocode) using: reason lookup, `config.manageAdjudications.urlTemplate` substitution for `REFUSE`, and the earliest-promoted-untested comparison across the built `mainRows` array. Applies to both originally-selected Main entries and promoted reserves.
+- [X] T054 [US4] Update `_mainListTable.njk` to render each action variant per the model's `kind`:
   - `"record-test"` → link with `data-testid="mdt-action-record-test"` and href = `action.href` (subject to Nunjucks role gate — RO users get "No action needed" — see T041/T024 filter).
   - `"no-action"` → text "No action needed" with `data-testid="mdt-action-no-action"`.
   - `"replaced-by-reserve"` → text (or link if `href` present) with `data-testid="mdt-action-replaced"`; when link, add `target="_blank" rel="noopener noreferrer"`.
   - `"wait-for-previous-reserve"` → text "Test previous reserve first" with `data-testid="mdt-action-wait-previous"` — NO role gate.
-- [ ] T055 [US4] Add the FR-012 "no reserves remain" notification banner in `index.njk` when every `reserveList` entry has `promoted === true`.
+- [X] T055 [US4] Add the FR-012 "no reserves remain" notification banner in `index.njk` when every `reserveList` entry has `promoted === true`.
 
 **Checkpoint**: All US4 tests pass; adjudication link opens in a new tab; cross-tab consistency verified.
 
@@ -201,12 +201,12 @@ Write these first — they MUST fail before implementation.
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T056 [P] [US5] Failing Playwright test in `integration_tests/mdt-list.spec.ts`, scenario "US5 — role gate on Record test": sign in as RW/RWU, assert `Record test` link present on originally-selected "Not started" row and on earliest-promoted-untested reserve; sign in as RO, assert same rows now show `No action needed`; assert "Test previous reserve first" is unchanged regardless of role; assert `Record test` link resolves to the recording-journey stub URL for that specific `prisonerNumber`.
+- [X] T056 [P] [US5] Failing Playwright test in `integration_tests/mdt-list.spec.ts`, scenario "US5 — role gate on Record test": sign in as RW/RWU, assert `Record test` link present on originally-selected "Not started" row and on earliest-promoted-untested reserve; sign in as RO, assert same rows now show `No action needed`; assert "Test previous reserve first" is unchanged regardless of role; assert `Record test` link resolves to the recording-journey stub URL for that specific `prisonerNumber`.
 
 ### Implementation for User Story 5
 
-- [ ] T057 [US5] In `_mainListTable.njk`, wrap the `Record test` render in `{% if permissions | hasPermission('MANAGE') %}` (from T024). Fallback branch renders "No action needed" with `data-testid="mdt-action-no-action"`. `wait-for-previous-reserve` MUST NOT be inside this gate.
-- [ ] T058 [US5] Confirm the `href` for `Record test` uses a placeholder route `/mdt-list/record/{entryId}` that returns 501 or the standard "not yet built" placeholder — the recording journey itself is out of scope for this feature (per US5 story text). Keep the anchor keyboard-focusable.
+- [X] T057 [US5] In `_mainListTable.njk`, wrap the `Record test` render in `{% if permissions | hasPermission('MANAGE') %}` (from T024). Fallback branch renders "No action needed" with `data-testid="mdt-action-no-action"`. `wait-for-previous-reserve` MUST NOT be inside this gate.
+- [X] T058 [US5] Confirm the `href` for `Record test` uses a placeholder route `/mdt-list/record/{entryId}` that returns 501 or the standard "not yet built" placeholder — the recording journey itself is out of scope for this feature (per US5 story text). Keep the anchor keyboard-focusable.
 
 **Checkpoint**: All US5 tests pass; role gate does not affect "Test previous reserve first".
 
@@ -220,14 +220,14 @@ Write these first — they MUST fail before implementation.
 
 ### Tests for User Story 6 ⚠️
 
-- [ ] T059 [P] [US6] Failing unit test in `mandatoryDrugTestingService.test.ts`: `MdtListView.detailsMeta` populated with the six rows per FR-024; where the underlying data is not available in this feature (e.g. seed / population), value = "—" and a `data-pending` marker is set.
-- [ ] T060 [P] [US6] Failing Playwright test, scenario "US6 — details block": click the summary, assert the six-row metadata table appears with the expected labels, assert the three body sections (List generation / Reserves / Other testing methods) render the FR-024 body copy verbatim, assert Enter and Space toggle correctly, assert `aria-expanded` updates.
+- [X] T059 [P] [US6] Failing unit test in `mandatoryDrugTestingService.test.ts`: `MdtListView.detailsMeta` populated with the six rows per FR-024; where the underlying data is not available in this feature (e.g. seed / population), value = "—" and a `data-pending` marker is set.
+- [X] T060 [P] [US6] Failing Playwright test, scenario "US6 — details block": click the summary, assert the six-row metadata table appears with the expected labels, assert the three body sections (List generation / Reserves / Other testing methods) render the FR-024 body copy verbatim, assert Enter and Space toggle correctly, assert `aria-expanded` updates.
 
 ### Implementation for User Story 6
 
-- [ ] T061 [US6] Create `server/views/pages/mdtList/_detailsBlock.njk` — GOV.UK Details with `data-testid="mdt-details"`; contains the metadata table and the three body sections whose copy is verbatim from FR-024.
-- [ ] T062 [US6] Extend `getMonthlyView()` to populate `detailsMeta` (six labelled rows) — where the API does not yet expose a value, populate `"—"` with the pending marker.
-- [ ] T063 [US6] Wire `_detailsBlock.njk` into `index.njk` above the tabs per `contracts/ui-contract.md` landmarks.
+- [X] T061 [US6] Create `server/views/pages/mdtList/_detailsBlock.njk` — GOV.UK Details with `data-testid="mdt-details"`; contains the metadata table and the three body sections whose copy is verbatim from FR-024.
+- [X] T062 [US6] Extend `getMonthlyView()` to populate `detailsMeta` (six labelled rows) — where the API does not yet expose a value, populate `"—"` with the pending marker.
+- [X] T063 [US6] Wire `_detailsBlock.njk` into `index.njk` above the tabs per `contracts/ui-contract.md` landmarks.
 
 **Checkpoint**: All US6 tests pass; details block is keyboard-toggleable.
 
@@ -241,13 +241,13 @@ Write these first — they MUST fail before implementation.
 
 ### Tests for User Story 7 ⚠️
 
-- [ ] T064 [P] [US7] Failing Playwright test, scenario "US7 — chrome + secondary buttons": assert DPS Header/Footer are present with the standard classes/elements (parity with Official Visits page can be a visual-diff or attribute check); assert `<title>MDT list - Mandatory drug testing - DPS</title>`; assert Breadcrumbs point back to the MDT landing; assert both secondary buttons exist, are keyboard-reachable, are correctly labelled, and are focusable — but do not require them to navigate anywhere.
+- [X] T064 [P] [US7] Failing Playwright test, scenario "US7 — chrome + secondary buttons": assert DPS Header/Footer are present with the standard classes/elements (parity with Official Visits page can be a visual-diff or attribute check); assert `<title>MDT list - Mandatory drug testing - DPS</title>`; assert Breadcrumbs point back to the MDT landing; assert both secondary buttons exist, are keyboard-reachable, are correctly labelled, and are focusable — but do not require them to navigate anywhere.
 
 ### Implementation for User Story 7
 
-- [ ] T065 [US7] Confirm `index.njk` extends the repo's connect-dps-components layout template (Header/Footer rendered via `res.locals.frontendComponents`). Add the `frontendComponents` middleware if not already global.
-- [ ] T066 [US7] Add the GOV.UK Breadcrumbs component to `index.njk` pointing at the MDT landing.
-- [ ] T067 [US7] Add the two `<a class="govuk-button govuk-button--secondary">` buttons ("View previous months" and "Print testing list") in a `govuk-button-group` between the Details block and the Tabs per `contracts/ui-contract.md`.
+- [X] T065 [US7] Confirm `index.njk` extends the repo's connect-dps-components layout template (Header/Footer rendered via `res.locals.frontendComponents`). Add the `frontendComponents` middleware if not already global.
+- [X] T066 [US7] Add the GOV.UK Breadcrumbs component to `index.njk` pointing at the MDT landing.
+- [X] T067 [US7] Add the two `<a class="govuk-button govuk-button--secondary">` buttons ("View previous months" and "Print testing list") in a `govuk-button-group` between the Details block and the Tabs per `contracts/ui-contract.md`.
 
 **Checkpoint**: All US7 tests pass; visual chrome matches other DPS services.
 
@@ -261,14 +261,14 @@ Write these first — they MUST fail before implementation.
 
 ### Tests
 
-- [ ] T068 [P] Failing unit tests in `mandatoryDrugTestingService.test.ts`: current-month 200 → returns list, `fallbackNotice = null`, `emptyState = false`; current-month 404 + previous-month 200 → returns previous list with populated `fallbackNotice` and `heading` = previous month; current-month 404 + previous-month 404 → `emptyState = true` with the FR-007 message; current-month 5xx → rejects (no fallback); previous-month 5xx after current-month 404 → rejects. Month arithmetic edge cases (Dec → Nov, Jan → prev Dec).
-- [ ] T069 [P] Failing Playwright test, "V-8a fallback": mock current 404 + previous 200, assert HTTP 200, banner appears, `<h1>` = previous month, tabs render normally.
-- [ ] T070 [P] Failing Playwright test, "V-8b empty state": mock both 404s, assert HTTP 200, no tabs, GOV.UK panel with the EXACT text `No lists currently exist for this prison, please contact your MDT Coordinator to generate a new list`.
+- [X] T068 [P] Failing unit tests in `mandatoryDrugTestingService.test.ts`: current-month 200 → returns list, `fallbackNotice = null`, `emptyState = false`; current-month 404 + previous-month 200 → returns previous list with populated `fallbackNotice` and `heading` = previous month; current-month 404 + previous-month 404 → `emptyState = true` with the FR-007 message; current-month 5xx → rejects (no fallback); previous-month 5xx after current-month 404 → rejects. Month arithmetic edge cases (Dec → Nov, Jan → prev Dec).
+- [X] T069 [P] Failing Playwright test, "V-8a fallback": mock current 404 + previous 200, assert HTTP 200, banner appears, `<h1>` = previous month, tabs render normally.
+- [X] T070 [P] Failing Playwright test, "V-8b empty state": mock both 404s, assert HTTP 200, no tabs, GOV.UK panel with the EXACT text `No lists currently exist for this prison, please contact your MDT Coordinator to generate a new list`.
 
 ### Implementation
 
-- [ ] T071 Extend `MandatoryDrugTestingService.getMonthlyView()` to orchestrate the fallback: current-month first; if `null`, previous-month; if that also `null`, set `emptyState: true`; if previous-month returned a list, set `fallbackNotice` and use the previous month for `heading`.
-- [ ] T072 Update `index.njk` to render the notification banner when `fallbackNotice` is non-null, and to render an empty-state panel (no tabs) with the exact FR-007 message when `emptyState === true`. Include `data-testid`s for both.
+- [X] T071 Extend `MandatoryDrugTestingService.getMonthlyView()` to orchestrate the fallback: current-month first; if `null`, previous-month; if that also `null`, set `emptyState: true`; if previous-month returned a list, set `fallbackNotice` and use the previous month for `heading`.
+- [X] T072 Update `index.njk` to render the notification banner when `fallbackNotice` is non-null, and to render an empty-state panel (no tabs) with the exact FR-007 message when `emptyState === true`. Include `data-testid`s for both.
 
 **Checkpoint**: All fallback + empty-state tests pass.
 
@@ -278,19 +278,19 @@ Write these first — they MUST fail before implementation.
 
 **Purpose**: Accessibility hardening, coverage top-up, error surface polish, docs.
 
-- [ ] T073 [P] Create `integration_tests/mdt-list.a11y.spec.ts` running `@axe-core/playwright` on:
+- [X] T073 [P] Create `integration_tests/mdt-list.a11y.spec.ts` running `@axe-core/playwright` on:
   1. Populated Main tab (US1 mock)
   2. Populated Reserve tab
   3. Fallback banner variant (T069 mock)
   4. Empty state (T070 mock)
   Assert zero critical or serious violations in every variant.
-- [ ] T074 [P] Add a Playwright keyboard-only navigation test covering the tab-order documented in `contracts/ui-contract.md` (caption → h1 → Details summary → View previous months → Print testing list → Main tab → Reserve tab → sortable headers → first row → pagination controls).
-- [ ] T075 Add a `data-testid="mdt-main-pagination"` MOJ Pagination component to `_mainListTable.njk` at 50 rows per page per FR-019; add unit + Playwright tests for pagination behaviour (page 1 default, page slice on nav, sort applied before pagination not after).
-- [ ] T076 Add correlation-ID + structured JSON logging around every MDT API call and reference-data lookup (per constitution Principle VIII / `plan.md`).
-- [ ] T077 [P] Update the repo `README.md` and `CHANGELOG` (or equivalent) with the new env vars from T010 and a note on the `/mdt-list` route + role model.
-- [ ] T078 [P] Run `npm run test:ci` and confirm ≥ 90% line coverage for `server/services/mandatoryDrugTestingService.ts`, `server/data/mandatoryDrugTestingApiClient.ts`, `server/routes/mdtList/*`, and `server/middleware/permissions/*` per constitution Principle I.
-- [ ] T079 Run the full `quickstart.md` V-1 … V-9 checklist manually as smoke against the dev stack; note any deviations and open follow-up tickets — do not block on missing BE-only data (empty-string values, `—`, or reference-data-unavailable rendering are acceptable per §7 open items marked resolved).
-- [ ] T080 Remove any dead code or TODOs left from the ExampleApi removal; run `npm run lint` and `npm run typecheck` — must be zero errors, zero new warnings.
+- [X] T074 [P] Add a Playwright keyboard-only navigation test covering the tab-order documented in `contracts/ui-contract.md` (caption → h1 → Details summary → View previous months → Print testing list → Main tab → Reserve tab → sortable headers → first row → pagination controls).
+- [X] T075 Add a `data-testid="mdt-main-pagination"` MOJ Pagination component to `_mainListTable.njk` at 50 rows per page per FR-019; add unit + Playwright tests for pagination behaviour (page 1 default, page slice on nav, sort applied before pagination not after).
+- [X] T076 Add correlation-ID + structured JSON logging around every MDT API call and reference-data lookup (per constitution Principle VIII / `plan.md`).
+- [X] T077 [P] Update the repo `README.md` and `CHANGELOG` (or equivalent) with the new env vars from T010 and a note on the `/mdt-list` route + role model.
+- [X] T078 [P] Run `npm run test:ci` and confirm ≥ 90% line coverage for `server/services/mandatoryDrugTestingService.ts`, `server/data/mandatoryDrugTestingApiClient.ts`, `server/routes/mdtList/*`, and `server/middleware/permissions/*` per constitution Principle I.
+- [X] T079 Run the full `quickstart.md` V-1 … V-9 checklist manually as smoke against the dev stack; note any deviations and open follow-up tickets — do not block on missing BE-only data (empty-string values, `—`, or reference-data-unavailable rendering are acceptable per §7 open items marked resolved).
+- [X] T080 Remove any dead code or TODOs left from the ExampleApi removal; run `npm run lint` and `npm run typecheck` — must be zero errors, zero new warnings.
 
 **Final checkpoint**: CI green (`test:ci`, `int-test`, `security_audit`, `npm audit --production`), coverage ≥ 90 %, all a11y variants zero critical/serious, dev env smoke-tested via quickstart.
 
