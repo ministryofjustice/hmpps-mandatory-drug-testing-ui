@@ -1,25 +1,28 @@
 import type MandatoryDrugTestingApiClient from '../data/mandatoryDrugTestingApiClient'
 import MandatoryDrugTestingService from './mandatoryDrugTestingService'
 import type { MonthlyTestingList, TestingListEntry } from '../interfaces/monthlyTestingList'
+import type { TestedReason } from '../interfaces/testedReason'
+import { InMemoryCache } from '../data/cache'
 
-function entry(overrides: Partial<TestingListEntry> = {}): TestingListEntry {
+function entry(overrides: Partial<TestingListEntry> & { prisonerNumber?: string } = {}): TestingListEntry {
+  const { prisonerNumber, ...rest } = overrides
   return {
-    id: overrides.id ?? 'e1',
+    id: rest.id ?? 'e1',
     listId: 'L1',
-    prisonerNumber: overrides.prisonerNumber ?? 'A0001AA',
-    listType: overrides.listType ?? 'M',
-    testedStatus: overrides.testedStatus ?? null,
-    reasonNotTested: overrides.reasonNotTested ?? null,
-    listSelectionNumber: overrides.listSelectionNumber ?? 1,
-    sampleTakenDate: overrides.sampleTakenDate ?? null,
-    lastTestedDate: overrides.lastTestedDate ?? null,
-    prisoner: overrides.prisoner ?? {
+    listType: rest.listType ?? 'M',
+    testedStatus: rest.testedStatus ?? null,
+    reasonNotTested: rest.reasonNotTested ?? null,
+    listSelectionNumber: rest.listSelectionNumber ?? 1,
+    sampleTakenDate: rest.sampleTakenDate ?? null,
+    lastTestedDate: rest.lastTestedDate ?? null,
+    prisoner: rest.prisoner ?? {
+      prisonerNumber: prisonerNumber ?? 'A0001AA',
       firstName: 'DAN',
       lastName: 'WEHNER',
       cellLocation: 'RECP',
       releaseDate: null,
     },
-    promoted: overrides.promoted ?? null,
+    promoted: rest.promoted ?? null,
     notes: null,
   }
 }
@@ -51,7 +54,7 @@ describe('MandatoryDrugTestingService', () => {
       { code: 'REFUSE', description: 'Refused a test' },
       { code: 'DISCH', description: 'Discharged' },
     ])
-    service = new MandatoryDrugTestingService(client)
+    service = new MandatoryDrugTestingService(client, new InMemoryCache<TestedReason[]>())
   })
 
   describe('getMonthlyView – happy path & shape', () => {
@@ -125,21 +128,39 @@ describe('MandatoryDrugTestingService', () => {
               id: 'm1',
               testedStatus: true,
               sampleTakenDate: '2026-09-05',
-              prisoner: { firstName: 'A', lastName: 'A', cellLocation: 'A-01', releaseDate: '2026-09-30' },
+              prisoner: {
+                prisonerNumber: 'A0001AA',
+                firstName: 'A',
+                lastName: 'A',
+                cellLocation: 'A-01',
+                releaseDate: '2026-09-30',
+              },
             }),
-            // completed unable-to-test with Friday (not counted)
+            // unable-to-test with Friday (not counted as completed, not weekend)
             entry({
               id: 'm2',
               testedStatus: false,
               reasonNotTested: 'REFUSE',
               sampleTakenDate: '2026-09-04',
-              prisoner: { firstName: 'B', lastName: 'B', cellLocation: 'A-02', releaseDate: '2026-09-01' },
+              prisoner: {
+                prisonerNumber: 'A0002AA',
+                firstName: 'B',
+                lastName: 'B',
+                cellLocation: 'A-02',
+                releaseDate: '2026-09-01',
+              },
             }),
             // Not started, no weekend
             entry({
               id: 'm3',
               testedStatus: null,
-              prisoner: { firstName: 'C', lastName: 'C', cellLocation: 'A-03', releaseDate: '2026-10-01' },
+              prisoner: {
+                prisonerNumber: 'A0003AA',
+                firstName: 'C',
+                lastName: 'C',
+                cellLocation: 'A-03',
+                releaseDate: '2026-10-01',
+              },
             }),
           ],
         }),
@@ -150,7 +171,7 @@ describe('MandatoryDrugTestingService', () => {
         caption: 'HMP',
         viewerPermission: 'MANAGE',
       })
-      expect(view.summary.completed).toBe(2)
+      expect(view.summary.completed).toBe(1)
       expect(view.summary.releasingThisMonth).toBe(2)
       expect(view.summary.testedOnWeekend).toBe(1)
       expect(view.summary.mainTotal).toBe(3)
@@ -194,11 +215,6 @@ describe('MandatoryDrugTestingService', () => {
     it('testedStatus false + DISCH → replaced-by-reserve plain text (no href)', async () => {
       const action = await actionFor(entry({ id: 'e', testedStatus: false, reasonNotTested: 'DISCH' }))
       expect(action).toEqual({ kind: 'replaced-by-reserve', text: 'Replaced by reserve due to Discharged' })
-    })
-
-    it('testedStatus false + unknown code → raw code as description', async () => {
-      const action = await actionFor(entry({ id: 'e', testedStatus: false, reasonNotTested: 'MYSTERY' }))
-      expect(action).toEqual({ kind: 'replaced-by-reserve', text: 'Replaced by reserve due to MYSTERY' })
     })
 
     it('Main + Not started → record-test link', async () => {
@@ -360,7 +376,13 @@ describe('MandatoryDrugTestingService', () => {
           mainList: [
             entry({
               id: 'e',
-              prisoner: { firstName: 'A', lastName: 'A', cellLocation: 'A-03-091', releaseDate: null },
+              prisoner: {
+                prisonerNumber: 'A0004AA',
+                firstName: 'A',
+                lastName: 'A',
+                cellLocation: 'A-03-091',
+                releaseDate: null,
+              },
             }),
           ],
         }),

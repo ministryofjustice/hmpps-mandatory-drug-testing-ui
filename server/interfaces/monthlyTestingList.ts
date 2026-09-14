@@ -1,4 +1,5 @@
 export interface Prisoner {
+  prisonerNumber: string
   firstName: string
   lastName: string
   cellLocation: string
@@ -8,7 +9,6 @@ export interface Prisoner {
 export interface TestingListEntry {
   id: string
   listId: string
-  prisonerNumber: string
   listType: 'M' | 'R'
   testedStatus: boolean | null
   reasonNotTested: string | null

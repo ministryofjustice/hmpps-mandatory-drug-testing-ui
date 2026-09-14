@@ -15,17 +15,15 @@ export default class MdtListController {
     try {
       const user = res.locals.user as {
         username: string
-        activeCaseLoadId?: string
-        caseLoads?: Array<{ caseLoadId: string; description: string }>
+        activeCaseLoad?: { caseLoadId: string; description: string }
       }
-      const activeCaseLoadId = user?.activeCaseLoadId
+      const activeCaseLoadId = user?.activeCaseLoad.caseLoadId
       if (!activeCaseLoadId) {
         logger.error('MDT list requested but activeCaseLoadId is missing on res.locals.user')
         res.status(500).render('pages/error')
         return
       }
-      const caseload = user.caseLoads?.find(cl => cl.caseLoadId === activeCaseLoadId)
-      const caption = caseload?.description ?? `HMP ${activeCaseLoadId}`
+      const caption = user.activeCaseLoad.description
 
       const now = new Date()
       const listDate = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}`

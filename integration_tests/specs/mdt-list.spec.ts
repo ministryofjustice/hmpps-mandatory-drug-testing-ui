@@ -16,27 +16,37 @@ function stubList(): MonthlyTestingList {
       {
         id: 'm1',
         listId: 'L1',
-        prisonerNumber: 'A0001AA',
         listType: 'M',
         testedStatus: null,
         reasonNotTested: null,
         listSelectionNumber: 1,
         sampleTakenDate: null,
         lastTestedDate: null,
-        prisoner: { firstName: 'DAN', lastName: 'WEHNER', cellLocation: 'A-01-001', releaseDate: null },
+        prisoner: {
+          prisonerNumber: 'A0001AA',
+          firstName: 'DAN',
+          lastName: 'WEHNER',
+          cellLocation: 'A-01-001',
+          releaseDate: null,
+        },
         promoted: null,
       },
       {
         id: 'm2',
         listId: 'L1',
-        prisonerNumber: 'A0002AA',
         listType: 'M',
         testedStatus: false,
         reasonNotTested: 'REFUSE',
         listSelectionNumber: 2,
         sampleTakenDate: null,
         lastTestedDate: '2025-08-01',
-        prisoner: { firstName: 'JANE', lastName: 'DOE', cellLocation: 'A-01-002', releaseDate: '2027-01-01' },
+        prisoner: {
+          prisonerNumber: 'A0002AA',
+          firstName: 'JANE',
+          lastName: 'DOE',
+          cellLocation: 'A-01-002',
+          releaseDate: '2027-01-01',
+        },
         promoted: null,
       },
     ],
@@ -44,27 +54,37 @@ function stubList(): MonthlyTestingList {
       {
         id: 'r1',
         listId: 'L1',
-        prisonerNumber: 'A0003AA',
         listType: 'R',
         testedStatus: null,
         reasonNotTested: null,
         listSelectionNumber: 1,
         sampleTakenDate: null,
         lastTestedDate: null,
-        prisoner: { firstName: 'JOHN', lastName: 'SMITH', cellLocation: '1-3-037', releaseDate: null },
+        prisoner: {
+          prisonerNumber: 'A0003AA',
+          firstName: 'JOHN',
+          lastName: 'SMITH',
+          cellLocation: '1-3-037',
+          releaseDate: null,
+        },
         promoted: true,
       },
       {
         id: 'r2',
         listId: 'L1',
-        prisonerNumber: 'A0004AA',
         listType: 'R',
         testedStatus: null,
         reasonNotTested: null,
         listSelectionNumber: 2,
         sampleTakenDate: null,
         lastTestedDate: null,
-        prisoner: { firstName: 'ALICE', lastName: 'BROWN', cellLocation: 'B-01-001', releaseDate: null },
+        prisoner: {
+          prisonerNumber: 'A0004AA',
+          firstName: 'ALICE',
+          lastName: 'BROWN',
+          cellLocation: 'B-01-001',
+          releaseDate: null,
+        },
         promoted: false,
       },
     ],
@@ -154,6 +174,7 @@ test.describe('/mdt-list', () => {
     await expect(page).toHaveTitle(/MDT list.*DPS/)
     await expect(page.getByTestId('mdt-view-previous')).toBeVisible()
     await expect(page.getByTestId('mdt-print')).toBeVisible()
+    await expect(page.getByTestId('mdt-breadcrumb')).toBeVisible()
   })
 
   test('V-8a fallback — current-month 404 + previous-month 200', async ({ page }) => {

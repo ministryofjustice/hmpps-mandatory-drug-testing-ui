@@ -48,6 +48,16 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpCurrentUser())
   app.use(populateUserPermissions())
 
+  app.get(
+    /(.*)/,
+    getFrontendComponents({
+      logger,
+      requestOptions: { includeSharedData: true },
+      componentApiConfig: config.apis.frontendComponents,
+      dpsUrl: config.dpsUrl,
+    }),
+  )
+
   app.use(routes(services))
 
   app.use((_req, _res, next) => next(createError(404, 'Not found')))

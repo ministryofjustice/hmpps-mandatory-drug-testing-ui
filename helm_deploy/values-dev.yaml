@@ -14,9 +14,11 @@ generic-service:
     INGRESS_URL: "https://mandatory-drug-testing-ui-dev.hmpps.service.justice.gov.uk"
     HMPPS_AUTH_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api-dev.prison.service.justice.gov.uk"
-    MANDATORY_DRUG_TESTING_API_URL: 'https://template-kotlin-dev.hmpps.service.justice.gov.uk'
-    PRISON_API_URL: 'https://prison-api-dev.prison.service.justice.gov.uk'
-    MANAGE_ADJUDICATIONS_URL: 'https://manage-adjudications-dev.hmpps.service.justice.gov.uk/incident-details/{prisonerNumber}'
+    COMPONENT_API_URL: "https://frontend-components-dev.hmpps.service.justice.gov.uk"
+    DPS_URL: "https://digital-dev.prison.service.justice.gov.uk"
+    MANDATORY_DRUG_TESTING_API_URL: "https://mandatory-drug-testing-api-dev.hmpps.service.justice.gov.uk"
+    PRISON_API_URL: "https://prison-api-dev.prison.service.justice.gov.uk"
+    MANAGE_ADJUDICATIONS_URL: "https://manage-adjudications-dev.hmpps.service.justice.gov.uk/incident-details/{prisonerNumber}"
     ENVIRONMENT_NAME: DEV
     AUDIT_ENABLED: "false"
 

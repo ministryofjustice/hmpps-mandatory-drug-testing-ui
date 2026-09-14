@@ -53,7 +53,6 @@ export interface ReserveListViewRow {
 export interface DetailsMetaRow {
   label: string
   value: string
-  pending?: boolean
 }
 
 export interface DetailsMeta {

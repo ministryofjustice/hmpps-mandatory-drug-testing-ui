@@ -3,12 +3,12 @@ import AuditService from './auditService'
 import MandatoryDrugTestingService from './mandatoryDrugTestingService'
 
 export const services = () => {
-  const { applicationInfo, hmppsAuditClient, mandatoryDrugTestingApiClient } = dataAccess()
+  const { applicationInfo, hmppsAuditClient, mandatoryDrugTestingApiClient, cacheStore } = dataAccess()
 
   return {
     applicationInfo,
     auditService: new AuditService(hmppsAuditClient),
-    mandatoryDrugTestingService: new MandatoryDrugTestingService(mandatoryDrugTestingApiClient),
+    mandatoryDrugTestingService: new MandatoryDrugTestingService(mandatoryDrugTestingApiClient, cacheStore()),
   }
 }
 

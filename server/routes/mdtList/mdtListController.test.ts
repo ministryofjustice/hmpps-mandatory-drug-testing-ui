@@ -7,6 +7,8 @@ import type { MdtListView } from '../../interfaces/mdtListView'
 import type { HmppsUser } from '../../interfaces/hmppsUser'
 import HmppsAuditClient from '../../data/hmppsAuditClient'
 import MandatoryDrugTestingApiClient from '../../data/mandatoryDrugTestingApiClient'
+import type { CacheInterface } from '../../data/cache'
+import type { TestedReason } from '../../interfaces/testedReason'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/mandatoryDrugTestingService')
@@ -14,6 +16,7 @@ jest.mock('../../services/mandatoryDrugTestingService')
 const auditService = new AuditService({} as HmppsAuditClient) as jest.Mocked<AuditService>
 const mdtService = new MandatoryDrugTestingService(
   {} as MandatoryDrugTestingApiClient,
+  {} as CacheInterface<TestedReason[]>,
 ) as jest.Mocked<MandatoryDrugTestingService>
 
 function view(overrides: Partial<MdtListView> = {}): MdtListView {
@@ -61,8 +64,7 @@ let app: Express
 const managerUser = {
   ...user,
   userRoles: ['MANDATORY_DRUG_TESTING_RW'],
-  activeCaseLoadId: 'MDI',
-  caseLoads: [{ caseLoadId: 'MDI', description: 'HMP Moorland', currentlyActive: true }],
+  activeCaseLoad: { caseLoadId: 'MDI', description: 'HMP Moorland' },
 } as unknown as HmppsUser
 
 const readOnlyUser = {
@@ -154,7 +156,10 @@ describe('GET /mdt-list', () => {
   })
 
   it('returns 500 when activeCaseLoadId is missing', () => {
-    const badUser = { ...managerUser, activeCaseLoadId: undefined } as unknown as HmppsUser
+    const badUser = {
+      ...managerUser,
+      activeCaseLoad: { caseLoadId: undefined, description: 'HMP Moorland' },
+    } as unknown as HmppsUser
     app = appWithAllRoutes({
       services: { auditService, mandatoryDrugTestingService: mdtService },
       userSupplier: () => badUser,
