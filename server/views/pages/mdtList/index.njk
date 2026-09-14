@@ -46,7 +46,7 @@
       }) }}
     </div>
   {% else %}
-    {% include "./_detailsBlock.njk" %}
+    {% include "./detailsBlock.njk" %}
 
     {% if view.noReservesRemaining %}
       {{ govukNotificationBanner({
@@ -57,16 +57,16 @@
 
     {% set mainPanelHtml %}
       <h2 class="govuk-heading-l">Main list</h2>
-      {% include "./_summaryBlocks.njk" %}
-      {% include "./_mainListTable.njk" %}
+      {% include "./summaryBlocks.njk" %}
+      {% include "./mainListTable.njk" %}
       <script type="application/json" id="mdt-list-data">{{ view.mainRows | dump | safe }}</script>
     {% endset %}
 
     {% set reservePanelHtml %}
       <h2 class="govuk-heading-l">Reserve list</h2>
-      {% include "./_reserveSummaryBlocks.njk" %}
+      {% include "./reserveSummaryBlocks.njk" %}
       <p class="govuk-body">Reserves are used when a main-list prisoner cannot be tested. They need to be tested in list order if used.</p>
-      {% include "./_reserveListTable.njk" %}
+      {% include "./reserveListTable.njk" %}
     {% endset %}
 
     {{ govukTabs({
