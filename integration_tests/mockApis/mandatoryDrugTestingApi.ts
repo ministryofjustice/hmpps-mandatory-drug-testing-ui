@@ -2,7 +2,7 @@ import { stubFor, stubPing as stubPingFor } from './wiremock'
 import type { MonthlyTestingList } from '../../server/interfaces/monthlyTestingList'
 import type { TestedReason } from '../../server/interfaces/testedReason'
 
-const stubPing = (status = 200) => stubPingFor('/mdt-api', status)
+const stubPing = (status = 200) => stubPingFor('', status)
 
 const stubMonthlyList = ({
   prisonCode,
@@ -18,7 +18,7 @@ const stubMonthlyList = ({
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/mdt-api/prisons/${prisonCode}/mandatory-drug-testing-lists/${listDate}`,
+      urlPattern: `/prisons/${prisonCode}/mandatory-drug-testing-lists/${listDate}`,
     },
     response: {
       status,
@@ -29,7 +29,7 @@ const stubMonthlyList = ({
 
 const stubTestedReasons = (reasons: TestedReason[] = [{ code: 'REFUSE', description: 'Refused a test' }]) =>
   stubFor({
-    request: { method: 'GET', urlPattern: '/mdt-api/reference-data/tested-reasons' },
+    request: { method: 'GET', urlPattern: '/reference-data/tested-reasons' },
     response: {
       status: 200,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },

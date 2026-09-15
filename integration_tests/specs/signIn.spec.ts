@@ -30,7 +30,7 @@ test.describe('SignIn', () => {
 
   test('User name visible in header', async ({ page }) => {
     await login(page, { name: 'A TestUser' })
-    await page.goto('/mdt-list')
+    await page.goto('/')
 
     const homePage = await MdtListPage.verifyOnPage(page)
 
@@ -39,7 +39,7 @@ test.describe('SignIn', () => {
 
   test('Phase banner visible in header', async ({ page }) => {
     await login(page)
-    await page.goto('/mdt-list')
+    await page.goto('/')
 
     const homePage = await MdtListPage.verifyOnPage(page)
 
@@ -48,7 +48,7 @@ test.describe('SignIn', () => {
 
   test('User can sign out', async ({ page }) => {
     await login(page)
-    await page.goto('/mdt-list')
+    await page.goto('/')
 
     const homePage = await MdtListPage.verifyOnPage(page)
     await homePage.signOut()
@@ -58,7 +58,7 @@ test.describe('SignIn', () => {
 
   test('User can manage their details', async ({ page }) => {
     await login(page, { name: 'A TestUser' })
-    await page.goto('/mdt-list')
+    await page.goto('/')
 
     await hmppsAuth.stubManageDetailsPage()
 
@@ -80,7 +80,7 @@ test.describe('SignIn', () => {
     await expect(page.getByRole('heading')).toHaveText('Sign in')
 
     await login(page, { name: 'Some OtherTestUser', active: true })
-    await page.goto('/mdt-list')
+    await page.goto('/')
 
     const homePage = await MdtListPage.verifyOnPage(page)
     await expect(homePage.usersName).toHaveText('S. Othertestuser')

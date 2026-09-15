@@ -74,7 +74,7 @@ test.describe('mdt-list accessibility', () => {
     await login(page, { roles: ['ROLE_MANDATORY_DRUG_TESTING_RW'] })
     await mandatoryDrugTestingApi.stubMonthlyList({ prisonCode: 'MDI', listDate: CURRENT_MONTH, body: populated })
 
-    await page.goto('/mdt-list')
+    await page.goto('/')
     await assertNoSeriousAxeViolations(page)
   })
 
@@ -88,7 +88,7 @@ test.describe('mdt-list accessibility', () => {
     })()
     await mandatoryDrugTestingApi.stubMonthlyList({ prisonCode: 'MDI', listDate: prev, status: 404 })
 
-    await page.goto('/mdt-list')
+    await page.goto('/')
     await assertNoSeriousAxeViolations(page)
   })
 })

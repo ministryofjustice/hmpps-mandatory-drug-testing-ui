@@ -91,7 +91,7 @@ function stubList(): MonthlyTestingList {
   }
 }
 
-test.describe('/mdt-list', () => {
+test.describe('/', () => {
   test.beforeEach(async () => {
     await mandatoryDrugTestingApi.stubPing()
     await mandatoryDrugTestingApi.stubTestedReasons()
@@ -105,7 +105,7 @@ test.describe('/mdt-list', () => {
     await login(page, { roles: ['ROLE_MANDATORY_DRUG_TESTING_RW'] })
     await mandatoryDrugTestingApi.stubMonthlyList({ prisonCode: 'MDI', listDate: CURRENT_MONTH, body: stubList() })
 
-    await page.goto('/mdt-list')
+    await page.goto('/')
     const pageObj = await MdtListPage.verifyOnPage(page)
     await expect(pageObj.caption).toContainText('HMP')
     await expect(pageObj.mainTable.locator('tbody tr')).toHaveCount(3) // m1, m2, r1 (promoted)
@@ -120,7 +120,7 @@ test.describe('/mdt-list', () => {
     await login(page, { roles: ['ROLE_MANDATORY_DRUG_TESTING_RW'] })
     await mandatoryDrugTestingApi.stubMonthlyList({ prisonCode: 'MDI', listDate: CURRENT_MONTH, body: stubList() })
 
-    await page.goto('/mdt-list')
+    await page.goto('/')
     const locationHeader = page.getByTestId('mdt-main-table').locator('thead th').nth(2)
     await locationHeader.click()
     await expect(locationHeader).toHaveAttribute('aria-sort', 'ascending')
@@ -132,7 +132,7 @@ test.describe('/mdt-list', () => {
     await login(page, { roles: ['ROLE_MANDATORY_DRUG_TESTING_RW'] })
     await mandatoryDrugTestingApi.stubMonthlyList({ prisonCode: 'MDI', listDate: CURRENT_MONTH, body: stubList() })
 
-    await page.goto('/mdt-list')
+    await page.goto('/')
     await page.locator('a[href="#reserve-list"]').click()
     const reserveTable = page.getByTestId('mdt-reserve-table')
     await expect(reserveTable).toBeVisible()
@@ -144,7 +144,7 @@ test.describe('/mdt-list', () => {
     await login(page, { roles: ['ROLE_MANDATORY_DRUG_TESTING_RW'] })
     await mandatoryDrugTestingApi.stubMonthlyList({ prisonCode: 'MDI', listDate: CURRENT_MONTH, body: stubList() })
 
-    await page.goto('/mdt-list')
+    await page.goto('/')
     const replaced = page.getByTestId('mdt-action-replaced').first()
     await expect(replaced).toContainText('Refused a test')
     await expect(replaced).toHaveAttribute('target', '_blank')
@@ -155,7 +155,7 @@ test.describe('/mdt-list', () => {
     await login(page, { roles: ['ROLE_MANDATORY_DRUG_TESTING_RO'] })
     await mandatoryDrugTestingApi.stubMonthlyList({ prisonCode: 'MDI', listDate: CURRENT_MONTH, body: stubList() })
 
-    await page.goto('/mdt-list')
+    await page.goto('/')
     await expect(page.getByTestId('mdt-action-record-test')).toHaveCount(0)
     await expect(page.getByTestId('mdt-action-no-action').first()).toBeVisible()
   })
@@ -164,7 +164,7 @@ test.describe('/mdt-list', () => {
     await login(page, { roles: ['ROLE_MANDATORY_DRUG_TESTING_RW'] })
     await mandatoryDrugTestingApi.stubMonthlyList({ prisonCode: 'MDI', listDate: CURRENT_MONTH, body: stubList() })
 
-    await page.goto('/mdt-list')
+    await page.goto('/')
     const details = page.getByTestId('mdt-details')
     await expect(details).toBeVisible()
     await details.locator('summary').click()
@@ -175,7 +175,7 @@ test.describe('/mdt-list', () => {
     await login(page, { roles: ['ROLE_MANDATORY_DRUG_TESTING_RW'] })
     await mandatoryDrugTestingApi.stubMonthlyList({ prisonCode: 'MDI', listDate: CURRENT_MONTH, body: stubList() })
 
-    await page.goto('/mdt-list')
+    await page.goto('/')
     await expect(page).toHaveTitle(/MDT list.*DPS/)
     await expect(page.getByTestId('mdt-view-previous')).toBeVisible()
     await expect(page.getByTestId('mdt-print')).toBeVisible()
@@ -196,7 +196,7 @@ test.describe('/mdt-list', () => {
       body: { ...stubList(), month: prev },
     })
 
-    await page.goto('/mdt-list')
+    await page.goto('/')
     await expect(page.getByTestId('mdt-fallback-notice')).toBeVisible()
   })
 
@@ -210,7 +210,7 @@ test.describe('/mdt-list', () => {
     })()
     await mandatoryDrugTestingApi.stubMonthlyList({ prisonCode: 'MDI', listDate: prev, status: 404 })
 
-    await page.goto('/mdt-list')
+    await page.goto('/')
     await expect(page.getByTestId('mdt-empty-state')).toContainText(
       'No lists currently exist for this prison, please contact your MDT Coordinator to generate a new list',
     )
@@ -218,7 +218,7 @@ test.describe('/mdt-list', () => {
 
   test('403 for users without MDT role', async ({ page }) => {
     await login(page, { roles: ['ROLE_SOMETHING_ELSE'] })
-    const response = await page.goto('/mdt-list')
+    const response = await page.goto('/')
     expect(response?.status()).toBe(403)
   })
 })
