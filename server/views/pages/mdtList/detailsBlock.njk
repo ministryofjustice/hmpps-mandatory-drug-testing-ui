@@ -1,0 +1,29 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% set detailsHtml %}
+  <table class="govuk-table" data-testid="mdt-details-table">
+    <tbody class="govuk-table__body">
+      {% for row in view.detailsMeta.rows %}
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">{{ row.label }}</th>
+          <td class="govuk-table__cell">{{ row.value }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3 class="govuk-heading-s">List generation</h3>
+  <p class="govuk-body">A new testing list is generated at the start of each month. It selects a percentage of the current population at random, based on the prison's monthly target.</p>
+
+  <h3 class="govuk-heading-s">Reserves</h3>
+  <p class="govuk-body">Reserves are held on the reserve list and used, in order, whenever a main-list prisoner cannot be tested.</p>
+
+  <h3 class="govuk-heading-s">Other testing methods</h3>
+  <p class="govuk-body">Suspicion, reception, risk-assessed, and frequent testing programmes are recorded elsewhere and are not included on this page.</p>
+{% endset %}
+
+{{ govukDetails({
+  summaryText: "How are the testing lists ordered?",
+  html: detailsHtml,
+  attributes: { "data-testid": "mdt-details" }
+}) }}

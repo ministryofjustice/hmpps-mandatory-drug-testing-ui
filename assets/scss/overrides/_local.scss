@@ -1,3 +1,60 @@
 .govuk-main-wrapper {
   min-height: 600px;
 }
+
+.mdt-header-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.mdt-header-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-bottom: govuk-spacing(6);
+
+  .govuk-button-group {
+    margin-bottom: 0;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .govuk-button {
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
+}
+
+.mdt-tag-color--light-grey {
+  background-color: #f3f2f1;
+  color: #000;
+}
+
+.mdt-summary-tile {
+  background-color: #f3f2f1;
+  padding: govuk-spacing(2) govuk-spacing(3);
+  margin-bottom: govuk-spacing(4);
+
+  &__label {
+    @include govuk-font(16);
+    color: govuk-colour("dark-grey");
+    margin: 0 0 govuk-spacing(1) 0;
+  }
+
+  &__value {
+    @include govuk-font(24);
+    margin: 0;
+
+    strong {
+      font-weight: 700;
+    }
+  }
+
+  &__meta {
+    @include govuk-font(16);
+    color: govuk-colour("dark-grey");
+    font-weight: 400;
+    margin-left: govuk-spacing(1);
+  }
+}

@@ -18,7 +18,7 @@
           {{ govukTag({
             text: environmentName,
             classes: environmentNameColour,
-            attributes: { "data-qa": "header-phase-banner" }
+            attributes: { "data-qa": "header-phase-banner", "data-testid": "header-phase-banner" }
           }) }}
         </div>
       {% endif %}
@@ -28,15 +28,15 @@
       <ul class="hmpps-header__navigation">
         {% if user %}
           <li class="hmpps-header__navigation__item">
-            <a data-qa="manageDetails" class="hmpps-header__link" href="/account-details" data-test="manage-account-link" rel="noopener noreferrer">
-              <span data-qa=header-user-name>{{ user.displayName | initialiseName }}</span>
+            <a data-qa="manageDetails" data-testid="manageDetails" class="hmpps-header__link" href="/account-details" data-test="manage-account-link" rel="noopener noreferrer">
+              <span data-qa="header-user-name" data-testid="header-user-name">{{ user.displayName | initialiseName }}</span>
               <span class="hmpps-header__link__sub-text">Manage your details</span>
             </a>
           </li>
         {% endif %}
 
         <li class="hmpps-header__navigation__item">
-          <a data-qa="signOut" class="hmpps-header__link" href="/sign-out">Sign out</a>
+          <a data-qa="signOut" data-testid="signOut" class="hmpps-header__link" href="/sign-out">Sign out</a>
         </li>
       </ul>
     </nav>

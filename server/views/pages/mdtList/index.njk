@@ -1,0 +1,80 @@
+{% extends "../../partials/layout.njk" %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = "MDT list - Mandatory drug testing - DPS" %}
+
+{% block content %}
+  {{ govukBreadcrumbs({
+    items: [
+      { text: "Digital Prison Services", href: "/" },
+      { text: "Mandatory drug testing", href: "/mdt-list" }
+    ],
+    attributes: { "data-testid": "mdt-breadcrumb" }
+  }) }}
+
+  <div class="govuk-grid-row mdt-header-row">
+    <div class="govuk-grid-column-one-half">
+      <span class="govuk-caption-xl" data-testid="mdt-caption">{{ view.caption }}</span>
+      <h1 class="govuk-heading-xl" data-testid="mdt-heading">{{ view.heading }}</h1>
+    </div>
+    {% if not view.emptyState %}
+      <div class="govuk-grid-column-one-half mdt-header-actions">
+        <div class="govuk-button-group" role="group" aria-label="Testing list actions">
+          <a class="govuk-button govuk-button--secondary" href="#" data-testid="mdt-view-previous" role="button">View previous months</a>
+          <a class="govuk-button govuk-button--secondary" href="#" data-testid="mdt-print" role="button">Print testing list</a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  {% if view.fallbackNotice %}
+    {{ govukNotificationBanner({
+      titleText: "Previous month shown",
+      html: '<p class="govuk-notification-banner__heading" data-testid="mdt-fallback-notice">' + view.fallbackNotice + '</p>'
+    }) }}
+  {% endif %}
+
+  {% if view.emptyState %}
+    <div data-testid="mdt-empty-state">
+      {{ govukPanel({
+        titleText: "No lists currently exist for this prison, please contact your MDT Coordinator to generate a new list",
+        classes: "govuk-panel--confirmation"
+      }) }}
+    </div>
+  {% else %}
+    {% include "./detailsBlock.njk" %}
+
+    {% if view.noReservesRemaining %}
+      {{ govukNotificationBanner({
+        titleText: "Important",
+        html: '<p class="govuk-notification-banner__heading" data-testid="mdt-no-reserves">No reserves remain — contact your MDT Coordinator if further replacements are needed.</p>'
+      }) }}
+    {% endif %}
+
+    {% set mainPanelHtml %}
+      <h2 class="govuk-heading-l">Main list</h2>
+      {% include "./summaryBlocks.njk" %}
+      {% include "./mainListTable.njk" %}
+      <script type="application/json" id="mdt-list-data">{{ view.mainRows | dump | safe }}</script>
+    {% endset %}
+
+    {% set reservePanelHtml %}
+      <h2 class="govuk-heading-l">Reserve list</h2>
+      {% include "./reserveSummaryBlocks.njk" %}
+      <p class="govuk-body">Reserves are used when a main-list prisoner cannot be tested. They need to be tested in list order if used.</p>
+      {% include "./reserveListTable.njk" %}
+    {% endset %}
+
+    {{ govukTabs({
+      items: [
+        { label: "Main list", id: "main-list", panel: { html: mainPanelHtml } },
+        { label: "Reserve list", id: "reserve-list", panel: { html: reservePanelHtml } }
+      ]
+    }) }}
+  {% endif %}
+{% endblock %}

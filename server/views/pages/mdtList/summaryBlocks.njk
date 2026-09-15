@@ -1,0 +1,20 @@
+<div class="mdt-summary-blocks govuk-grid-row" role="group" aria-label="Main list summary">
+  <div class="govuk-grid-column-one-third">
+    <div id="mdt-summary-completed" class="mdt-summary-tile" data-testid="mdt-summary-completed" role="group" aria-labelledby="mdt-summary-completed-label">
+      <p id="mdt-summary-completed-label" class="mdt-summary-tile__label">Completed</p>
+      <p class="mdt-summary-tile__value" aria-label="{{ view.summary.completed }} of {{ view.summary.mainTotal }} completed"><strong>{{ view.summary.completed }}</strong> <span class="mdt-summary-tile__meta" aria-hidden="true">of {{ view.summary.mainTotal }}</span></p>
+    </div>
+  </div>
+  <div class="govuk-grid-column-one-third">
+    <div id="mdt-summary-releasing" class="mdt-summary-tile" data-testid="mdt-summary-releasing" role="group" aria-labelledby="mdt-summary-releasing-label">
+      <p id="mdt-summary-releasing-label" class="mdt-summary-tile__label">Releasing this month</p>
+      <p class="mdt-summary-tile__value"><strong>{{ view.summary.releasingThisMonth }}</strong></p>
+    </div>
+  </div>
+  <div class="govuk-grid-column-one-third">
+    <div id="mdt-summary-weekend" class="mdt-summary-tile" data-testid="mdt-summary-weekend" role="group" aria-labelledby="mdt-summary-weekend-label">
+      <p id="mdt-summary-weekend-label" class="mdt-summary-tile__label">Tested on weekend</p>
+      <p class="mdt-summary-tile__value" aria-label="{{ view.summary.testedOnWeekend }} tested on weekend, target {{ view.summary.weekendTarget }}"><strong>{{ view.summary.testedOnWeekend }}</strong> <span class="mdt-summary-tile__meta" aria-hidden="true">Target: {{ view.summary.weekendTarget }}</span></p>
+    </div>
+  </div>
+</div>

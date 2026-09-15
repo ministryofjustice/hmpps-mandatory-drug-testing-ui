@@ -14,7 +14,11 @@ generic-service:
     INGRESS_URL: "https://mandatory-drug-testing-ui-preprod.hmpps.service.justice.gov.uk"
     HMPPS_AUTH_URL: "https://sign-in-preprod.hmpps.service.justice.gov.uk/auth"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api-preprod.prison.service.justice.gov.uk"
-    EXAMPLE_API_URL: 'https://template-kotlin-preprod.hmpps.service.justice.gov.uk'
+    COMPONENT_API_URL: "https://frontend-components-preprod.hmpps.service.justice.gov.uk"
+    DPS_URL: "https://digital-preprod.prison.service.justice.gov.uk"
+    MANDATORY_DRUG_TESTING_API_URL: "https://mandatory-drug-testing-api-preprod.hmpps.service.justice.gov.uk"
+    PRISON_API_URL: "https://prison-api-preprod.prison.service.justice.gov.uk"
+    MANAGE_ADJUDICATIONS_URL: "https://manage-adjudications-preprod.hmpps.service.justice.gov.uk/incident-details/{prisonerNumber}"
     ENVIRONMENT_NAME: PRE-PRODUCTION
     AUDIT_ENABLED: "false"
 

@@ -204,3 +204,30 @@ You'll need to manually handle the merge of the changes, but if you do it early,
 ## Change log
 
 A changelog for the service is available [here](./CHANGELOG.md)
+https://mandatory-drug-testing-dev.hmpps.service.justice.gov.uk/sign-in/callback/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fsign-in%2Fcallback&state=1whGtW4sLITilwQSGSFj2ZKt&client_id=hmpps-mandatory-drug-testing-ui-1
+https://mandatory-drug-testing-dev.hmpps.service.justice.gov.uk/sign-in/callback/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fsign-in%2Fcallback&state=PQ6FyjqxULxbPiaVgAQGMbVU&client_id=hmpps-mandatory-drug-testing-ui-1
+
+## /mdt-list route and environment variables
+
+The `/mdt-list` page renders the current month's Mandatory Drug Testing lists (Main + Reserve tabs).
+
+**Role model** (`server/middleware/permissions/`):
+
+| Role                              | Level        | Behaviour                                      |
+|-----------------------------------|--------------|------------------------------------------------|
+| `MANDATORY_DRUG_TESTING_RO`       | `VIEW_ONLY`  | Read-only; "Record test" swapped for "No action needed" |
+| `MANDATORY_DRUG_TESTING_RW`       | `MANAGE`     | Full access; "Record test" link enabled        |
+| `MANDATORY_DRUG_TESTING_RWU`      | `MANAGE`     | Full access                                    |
+| _(none)_                          | `FORBIDDEN`  | 403 render                                     |
+
+**Environment variables** used by this feature:
+
+| Variable                                        | Purpose                                                       |
+|-------------------------------------------------|---------------------------------------------------------------|
+| `MANDATORY_DRUG_TESTING_API_URL`                | Base URL of the MDT API                                       |
+| `MANDATORY_DRUG_TESTING_API_TIMEOUT_RESPONSE`   | Response timeout (ms; default 10000)                          |
+| `MANDATORY_DRUG_TESTING_API_TIMEOUT_DEADLINE`   | Deadline timeout (ms; default 10000)                          |
+| `PRISON_API_URL`                                | Base URL of the Prison API (used by `retrieveCaseLoadData`)   |
+| `PRISON_API_TIMEOUT_RESPONSE`                   | Response timeout (ms; default 10000)                          |
+| `PRISON_API_TIMEOUT_DEADLINE`                   | Deadline timeout (ms; default 10000)                          |
+| `MANAGE_ADJUDICATIONS_URL`                      | Template URL for the adjudication out-link; must contain `{prisonerNumber}` |

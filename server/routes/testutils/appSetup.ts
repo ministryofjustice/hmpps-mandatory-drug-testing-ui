@@ -9,6 +9,7 @@ import type { Services } from '../../services'
 import AuditService from '../../services/auditService'
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
+import populateUserPermissions from '../../middleware/permissions/populateUserPermissions'
 import HmppsAuditClient from '../../data/hmppsAuditClient'
 
 jest.mock('../../services/auditService')
@@ -21,7 +22,8 @@ export const user: HmppsUser = {
   displayName: 'First Last',
   authSource: 'nomis',
   staffId: 1234,
-  userRoles: [],
+  userRoles: ['MANDATORY_DRUG_TESTING_RW'],
+  activeCaseLoadId: 'MDI',
 }
 
 export const flashProvider = jest.fn()
@@ -36,8 +38,9 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
   app.use((req, res, next) => {
     req.user = userSupplier() as Express.User
     req.flash = flashProvider
+    const currentUser = req.user as HmppsUser & { activeCaseLoadId?: string; caseLoads?: unknown }
     res.locals = {
-      user: { ...req.user } as HmppsUser,
+      user: { ...currentUser } as HmppsUser,
       cspNonce: '',
       csrfToken: '',
       asset_path: '',
@@ -53,6 +56,7 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
   })
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
+  app.use(populateUserPermissions())
   app.use(routes(services))
   app.use((_req, _res, next) => next(new NotFound()))
   app.use(errorHandler(production))

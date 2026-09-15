@@ -1,0 +1,14 @@
+<div class="mdt-summary-blocks govuk-grid-row" role="group" aria-label="Reserve list summary">
+  <div class="govuk-grid-column-one-third">
+    <div id="mdt-reserve-summary-used" class="mdt-summary-tile" data-testid="mdt-reserve-summary-used" role="group" aria-labelledby="mdt-reserve-summary-used-label">
+      <p id="mdt-reserve-summary-used-label" class="mdt-summary-tile__label">Reserves used</p>
+      <p class="mdt-summary-tile__value" aria-label="{{ view.summary.reserve.reservesUsed }} of {{ view.summary.reserve.reserveTotal }} reserves used"><strong>{{ view.summary.reserve.reservesUsed }}</strong> <span class="mdt-summary-tile__meta" aria-hidden="true">of {{ view.summary.reserve.reserveTotal }}</span></p>
+    </div>
+  </div>
+  <div class="govuk-grid-column-one-third">
+    <div id="mdt-reserve-summary-releasing" class="mdt-summary-tile" data-testid="mdt-reserve-summary-releasing" role="group" aria-labelledby="mdt-reserve-summary-releasing-label">
+      <p id="mdt-reserve-summary-releasing-label" class="mdt-summary-tile__label">Releasing this month</p>
+      <p class="mdt-summary-tile__value"><strong>{{ view.summary.reserve.releasingThisMonth }}</strong></p>
+    </div>
+  </div>
+</div>

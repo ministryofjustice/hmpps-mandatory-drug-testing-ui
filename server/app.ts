@@ -2,13 +2,16 @@ import express from 'express'
 
 import createError from 'http-errors'
 
+import { getFrontendComponents, retrieveCaseLoadData } from '@ministryofjustice/hmpps-connect-dps-components'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
-
+import config from './config'
+import logger from '../logger'
 import setUpAuthentication from './middleware/setUpAuthentication'
 import setUpCsrf from './middleware/setUpCsrf'
 import setUpCurrentUser from './middleware/setUpCurrentUser'
+import populateUserPermissions from './middleware/permissions/populateUserPermissions'
 import setUpHealthChecks from './middleware/setUpHealthChecks'
 import setUpStaticResources from './middleware/setUpStaticResources'
 import setUpWebRequestParsing from './middleware/setUpRequestParsing'
@@ -34,7 +37,26 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpAuthentication())
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
+
+  app.use(
+    retrieveCaseLoadData({
+      logger,
+      prisonApiConfig: config.apis.prisonApi,
+    }),
+  )
+
   app.use(setUpCurrentUser())
+  app.use(populateUserPermissions())
+
+  app.get(
+    /(.*)/,
+    getFrontendComponents({
+      logger,
+      requestOptions: { includeSharedData: true },
+      componentApiConfig: config.apis.frontendComponents,
+      dpsUrl: config.dpsUrl,
+    }),
+  )
 
   app.use(routes(services))
 

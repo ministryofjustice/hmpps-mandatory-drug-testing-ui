@@ -9,23 +9,27 @@ generic-service:
     INGRESS_URL: "https://mandatory-drug-testing-ui.hmpps.service.justice.gov.uk"
     HMPPS_AUTH_URL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
-    EXAMPLE_API_URL: 'https://template-kotlin.hmpps.service.justice.gov.uk'
+    COMPONENT_API_URL: "https://frontend-components.hmpps.service.justice.gov.uk"
+    DPS_URL: "https://digital.prison.service.justice.gov.uk"
+    MANDATORY_DRUG_TESTING_API_URL: "https://mandatory-drug-testing-api.hmpps.service.justice.gov.uk"
+    PRISON_API_URL: "https://prison-api.prison.service.justice.gov.uk"
+    MANAGE_ADJUDICATIONS_URL: "https://manage-adjudications.hmpps.service.justice.gov.uk/incident-details/{prisonerNumber}"
     AUDIT_ENABLED: "false"
 
   allowlist:
     # Configure groups as appropriate to give the minimum ingress access required:
     #   digital_staff_and_mojo: devices on the MoJ network
     #   moj_cloud_platform: services on Cloud Platform
-    # Other IP allowlist groups are here: 
+    # Other IP allowlist groups are here:
     # https://github.com/ministryofjustice/hmpps-ip-allowlists/blob/main/ip-allowlist-groups.yaml
 
     groups:
       - digital_staff_and_mojo
       - moj_cloud_platform
 
-  # NOTE: Removing ALL allowlist groups will make the application accessible from the internet. 
-  #       If you are intending to do this, please ensure you uncomment the 'modsecurity_enabled=true' 
-  #       entry in the ingress above. This will enable WAF protection of the endpoint. You will need 
+  # NOTE: Removing ALL allowlist groups will make the application accessible from the internet.
+  #       If you are intending to do this, please ensure you uncomment the 'modsecurity_enabled=true'
+  #       entry in the ingress above. This will enable WAF protection of the endpoint. You will need
   #       to configure modsecurity rules to suit your needs. Further information can be found here:
   #       https://user-guide.cloud-platform.service.justice.gov.uk/documentation/networking/modsecurity.html#modsecurity-web-application-firewall
 
